@@ -69,31 +69,31 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
   const isTrackingTab = activeLayer === 'MAINTENANCE_LAYER' || activeLayer === 'ASSIGN_TRACKING';
 
   return (
-    <div className="bg-[#090e1a]/85 backdrop-blur-md border-t border-cyan-950/80 px-4 py-3 select-none text-xs font-mono shrink-0 shadow-2xl relative z-10">
+    <div className="bg-white/95 backdrop-blur-md border-t border-[#D5DEE8] px-4 py-3 select-none text-xs font-mono shrink-0 shadow-lg relative z-10">
       
       {/* Workflow Stage Header */}
-      <div className="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-slate-800">
+      <div className="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-[#D5DEE8]">
         <div className="flex items-center gap-2">
           {isAiTab && (
             <>
-              <div className="p-1 rounded bg-cyan-950 border border-cyan-500/40 text-cyan-400">
+              <div className="p-1 rounded bg-cyan-50 border border-cyan-300 text-cyan-600">
                 <Cpu className="w-4 h-4" />
               </div>
               <div>
-                <span className="font-bold text-slate-100 uppercase tracking-wider">AI Detection Workflow</span>
-                <span className="text-[11px] text-slate-400 block">Automated YOLOv8 road defect detections &amp; sensor telemetry stream</span>
+                <span className="font-bold text-[#172033] uppercase tracking-wider">AI Detection Workflow</span>
+                <span className="text-[11px] text-[#526071] block">Automated YOLOv8 road defect detections &amp; sensor telemetry stream</span>
               </div>
             </>
           )}
 
           {isAuthorityTab && (
             <>
-              <div className="p-1 rounded bg-amber-950 border border-amber-500/40 text-amber-400">
+              <div className="p-1 rounded bg-amber-50 border border-amber-300 text-amber-600">
                 <ShieldCheck className="w-4 h-4" />
               </div>
               <div>
-                <span className="font-bold text-slate-100 uppercase tracking-wider">Authority &amp; Verification Workflow</span>
-                <span className="text-[11px] text-slate-400 block">Review detected problems, verify validity, reject false positives, and assign to responsible authority</span>
+                <span className="font-bold text-[#172033] uppercase tracking-wider">Authority &amp; Verification Workflow</span>
+                <span className="text-[11px] text-[#526071] block">Review detected problems, verify validity, reject false positives, and assign to responsible authority</span>
               </div>
             </>
           )}
@@ -101,30 +101,30 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
           {isTrackingTab && (
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex items-center gap-2">
-                <div className="p-1 rounded bg-emerald-950 border border-emerald-500/40 text-emerald-400">
+                <div className="p-1 rounded bg-emerald-50 border border-emerald-300 text-emerald-600">
                   <Wrench className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="font-bold text-slate-100 uppercase tracking-wider">Problem Status Tracking</span>
-                  <span className="text-[11px] text-slate-400 block">Pending → In Progress → Solved</span>
+                  <span className="font-bold text-[#172033] uppercase tracking-wider">Problem Status Tracking</span>
+                  <span className="text-[11px] text-[#526071] block">Pending → In Progress → Solved</span>
                 </div>
               </div>
 
               {/* Three Status Filter Tabs */}
-              <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-lg border border-slate-800 ml-1">
+              <div className="flex items-center gap-1.5 bg-[#EEF2F6] p-1 rounded-lg border border-[#D5DEE8] ml-1">
                 <button
                   id="tab-tracking-pending"
                   type="button"
                   onClick={() => handleSelectTrackingTab('PENDING')}
                   className={`px-3 py-1 rounded text-xs font-bold font-mono transition-all flex items-center gap-1.5 cursor-pointer ${
                     currentTrackingTab === 'PENDING'
-                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/70 shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200 border border-transparent'
+                      ? 'bg-white text-amber-700 border border-amber-400 shadow-xs'
+                      : 'text-[#526071] hover:text-[#172033] border border-transparent'
                   }`}
                 >
                   <span>PENDING</span>
                   <span className={`px-1.5 py-0.2 rounded text-[10px] ${
-                    currentTrackingTab === 'PENDING' ? 'bg-amber-950 text-amber-300 font-bold border border-amber-800' : 'bg-slate-800 text-slate-400'
+                    currentTrackingTab === 'PENDING' ? 'bg-amber-50 text-amber-700 font-bold border border-amber-200' : 'bg-slate-200 text-[#526071]'
                   }`}>
                     {pendingIssues.length}
                   </span>
@@ -136,13 +136,13 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                   onClick={() => handleSelectTrackingTab('IN_PROGRESS')}
                   className={`px-3 py-1 rounded text-xs font-bold font-mono transition-all flex items-center gap-1.5 cursor-pointer ${
                     currentTrackingTab === 'IN_PROGRESS'
-                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/70 shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200 border border-transparent'
+                      ? 'bg-white text-cyan-700 border border-cyan-400 shadow-xs'
+                      : 'text-[#526071] hover:text-[#172033] border border-transparent'
                   }`}
                 >
                   <span>IN PROGRESS</span>
                   <span className={`px-1.5 py-0.2 rounded text-[10px] ${
-                    currentTrackingTab === 'IN_PROGRESS' ? 'bg-cyan-950 text-cyan-300 font-bold border border-cyan-800' : 'bg-slate-800 text-slate-400'
+                    currentTrackingTab === 'IN_PROGRESS' ? 'bg-cyan-50 text-cyan-700 font-bold border border-cyan-200' : 'bg-slate-200 text-[#526071]'
                   }`}>
                     {inProgressIssues.length}
                   </span>
@@ -154,13 +154,13 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                   onClick={() => handleSelectTrackingTab('SOLVED')}
                   className={`px-3 py-1 rounded text-xs font-bold font-mono transition-all flex items-center gap-1.5 cursor-pointer ${
                     currentTrackingTab === 'SOLVED'
-                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/70 shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200 border border-transparent'
+                      ? 'bg-white text-emerald-700 border border-emerald-400 shadow-xs'
+                      : 'text-[#526071] hover:text-[#172033] border border-transparent'
                   }`}
                 >
                   <span>SOLVED</span>
                   <span className={`px-1.5 py-0.2 rounded text-[10px] ${
-                    currentTrackingTab === 'SOLVED' ? 'bg-emerald-950 text-emerald-300 font-bold border border-emerald-800' : 'bg-slate-800 text-slate-400'
+                    currentTrackingTab === 'SOLVED' ? 'bg-emerald-50 text-emerald-700 font-bold border border-emerald-200' : 'bg-slate-200 text-[#526071]'
                   }`}>
                     {solvedIssues.length}
                   </span>
@@ -173,7 +173,7 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
         <button
           id="btn-hide-workflow-panel"
           onClick={onClose}
-          className="text-slate-400 hover:text-slate-200 text-xs px-2.5 py-1 rounded bg-slate-900 border border-slate-700 cursor-pointer transition-colors"
+          className="text-[#526071] hover:text-[#172033] text-xs px-2.5 py-1 rounded bg-white hover:bg-slate-50 border border-[#D5DEE8] cursor-pointer transition-colors shadow-2xs"
         >
           Hide Panel
         </button>
@@ -189,16 +189,16 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
               <div
                 key={item.id}
                 onClick={() => onSelectIssue(item)}
-                className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 hover:border-cyan-500/60 transition-all cursor-pointer w-72 flex flex-col justify-between group shadow-sm"
+                className="p-2.5 rounded-lg bg-white border border-[#D5DEE8] hover:border-cyan-400 transition-all cursor-pointer w-72 flex flex-col justify-between group shadow-xs"
               >
                 <div className="flex items-center justify-between mb-1.5">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-cyan-400 font-bold">{item.id}</span>
-                    <span className="px-1.5 py-0.2 rounded text-[9px] uppercase font-mono bg-cyan-950/80 text-cyan-300 border border-cyan-800">
+                    <span className="text-cyan-700 font-bold">{item.id}</span>
+                    <span className="px-1.5 py-0.2 rounded text-[9px] uppercase font-mono bg-cyan-50 text-cyan-700 border border-cyan-200">
                       {item.type.replace('_', ' ')}
                     </span>
                   </div>
-                  <span className="text-emerald-400 font-bold">{item.confidence}% Conf</span>
+                  <span className="text-emerald-600 font-bold">{item.confidence}% Conf</span>
                 </div>
 
                 <div className="flex items-center gap-2 mb-2">
@@ -206,21 +206,21 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                     <img
                       src={item.evidenceImage}
                       alt={item.title}
-                      className="w-12 h-9 rounded object-cover border border-slate-800 shrink-0"
+                      className="w-12 h-9 rounded object-cover border border-[#D5DEE8] shrink-0"
                     />
                   )}
                   <div className="min-w-0 flex-1">
-                    <div className="text-slate-200 font-sans font-semibold text-[11px] truncate">
+                    <div className="text-[#172033] font-sans font-semibold text-[11px] truncate">
                       {item.title}
                     </div>
-                    <div className="text-[10px] text-slate-400 truncate">
+                    <div className="text-[10px] text-[#526071] truncate">
                       📍 {item.locationName}
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1.5 border-t border-slate-900">
-                  <span>Bus: <strong className="text-amber-300">{item.busId}</strong></span>
+                <div className="flex items-center justify-between text-[10px] text-[#526071] pt-1.5 border-t border-[#D5DEE8]">
+                  <span>Bus: <strong className="text-amber-700">{item.busId}</strong></span>
                   <div className="flex items-center gap-1">
                     <button
                       type="button"
@@ -228,7 +228,7 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                         e.stopPropagation();
                         onSelectIssue(item);
                       }}
-                      className="px-2 py-0.5 rounded bg-cyan-900/60 hover:bg-cyan-800 text-cyan-200 border border-cyan-700/60 text-[10px] transition-colors"
+                      className="px-2 py-0.5 rounded bg-cyan-50 hover:bg-cyan-100 text-cyan-700 border border-cyan-200 text-[10px] transition-colors cursor-pointer"
                     >
                       View Detection
                     </button>
@@ -239,7 +239,7 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                           e.stopPropagation();
                           onVerifyProblem(item.id);
                         }}
-                        className="px-2 py-0.5 rounded bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 border border-emerald-700/60 text-[10px] transition-colors"
+                        className="px-2 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-[10px] transition-colors cursor-pointer"
                       >
                         Verify
                       </button>
@@ -262,28 +262,28 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                 <div
                   key={item.id}
                   onClick={() => onSelectIssue(item)}
-                  className={`p-2.5 rounded-lg border transition-all cursor-pointer w-88 flex flex-col justify-between shadow-sm ${
+                  className={`p-2.5 rounded-lg border transition-all cursor-pointer w-88 flex flex-col justify-between shadow-xs ${
                     isVerified
-                      ? 'bg-[#08121a] border-emerald-800/70 hover:border-emerald-500'
+                      ? 'bg-emerald-50/40 border-emerald-300 hover:border-emerald-500'
                       : isRejected
-                      ? 'bg-[#180b0e] border-rose-900/60 opacity-75'
-                      : 'bg-[#121622] border-amber-600/60 hover:border-amber-400'
+                      ? 'bg-rose-50/40 border-rose-300 opacity-80'
+                      : 'bg-white border-amber-300 hover:border-amber-400'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-amber-400 font-bold">{item.id}</span>
-                      <span className="px-1.5 py-0.2 rounded text-[9px] uppercase font-mono bg-slate-900 border border-slate-700 text-slate-300">
+                      <span className="text-amber-700 font-bold">{item.id}</span>
+                      <span className="px-1.5 py-0.2 rounded text-[9px] uppercase font-mono bg-[#EEF2F6] border border-[#D5DEE8] text-[#526071]">
                         {item.type.replace('_', ' ')}
                       </span>
                     </div>
                     <span
                       className={`px-1.5 py-0.5 rounded text-[9px] uppercase font-bold border ${
                         isVerified
-                          ? 'bg-emerald-950 text-emerald-300 border-emerald-700'
+                          ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
                           : isRejected
-                          ? 'bg-rose-950 text-rose-300 border-rose-700'
-                          : 'bg-amber-950 text-amber-300 border-amber-700 animate-pulse'
+                          ? 'bg-rose-50 text-rose-700 border-rose-300'
+                          : 'bg-amber-50 text-amber-700 border-amber-300 animate-pulse'
                       }`}
                     >
                       {item.verification.replace('_', ' ')}
@@ -291,13 +291,13 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                   </div>
 
                   {/* Primary Visual: Stored Problem Evidence Image with Exact Coordinates */}
-                  <div className="relative h-32 rounded overflow-hidden bg-slate-950 border border-slate-800 mb-2 group">
+                  <div className="relative h-32 rounded overflow-hidden bg-slate-100 border border-[#D5DEE8] mb-2 group">
                     <img
                       src={item.evidenceImage}
                       alt={item.title}
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 rounded bg-black/80 backdrop-blur-md text-[9px] font-mono text-cyan-300 border border-slate-800">
+                    <div className="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 rounded bg-black/75 backdrop-blur-md text-[9px] font-mono text-cyan-300 border border-slate-700">
                       📍 {item.lat.toFixed(4)}°, {item.lng.toFixed(4)}°
                     </div>
                     {item.googleMapsUrl && (
@@ -306,7 +306,7 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                         target="_blank"
                         rel="noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded bg-black/80 backdrop-blur-md hover:bg-black text-[9px] font-mono text-slate-300 hover:text-cyan-300 border border-slate-700 transition-colors"
+                        className="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded bg-black/75 backdrop-blur-md hover:bg-black text-[9px] font-mono text-white hover:text-cyan-300 border border-slate-700 transition-colors"
                         title="Open stored coordinates in Google Maps"
                       >
                         Map ↗
@@ -315,16 +315,16 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                   </div>
 
                   <div className="space-y-1 mb-2">
-                    <div className="text-slate-200 font-sans font-semibold text-[11px] truncate">
+                    <div className="text-[#172033] font-sans font-semibold text-[11px] truncate">
                       {item.title}
                     </div>
-                    <div className="text-[10px] text-slate-400 truncate flex items-center gap-1">
+                    <div className="text-[10px] text-[#526071] truncate flex items-center gap-1">
                       <span>📍 {item.locationName}</span>
                     </div>
-                    <div className="text-[10px] text-cyan-300 font-mono flex items-center justify-between pt-0.5">
-                      <span>AI Confidence: <strong className="text-cyan-200">{item.confidence}%</strong></span>
+                    <div className="text-[10px] text-cyan-700 font-mono flex items-center justify-between pt-0.5">
+                      <span>AI Confidence: <strong className="text-cyan-800">{item.confidence}%</strong></span>
                       {item.lat !== undefined && item.lng !== undefined && (
-                        <span className="text-slate-500 text-[9px]">
+                        <span className="text-[#7A8797] text-[9px]">
                           {item.lat.toFixed(4)}°, {item.lng.toFixed(4)}°
                         </span>
                       )}
@@ -333,14 +333,14 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
 
                   {/* Only display assigned if an assignment genuinely exists in the database */}
                   {item.assignedAuthority && (
-                    <div className="text-[10px] text-indigo-300 mb-2 truncate flex items-center gap-1 bg-indigo-950/40 px-2 py-0.5 rounded border border-indigo-800/40">
-                      <Building2 className="w-3 h-3 text-indigo-400 shrink-0" />
+                    <div className="text-[10px] text-indigo-700 mb-2 truncate flex items-center gap-1 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">
+                      <Building2 className="w-3 h-3 text-indigo-600 shrink-0" />
                       <span>Assigned: <strong>{item.assignedAuthority}</strong></span>
                     </div>
                   )}
 
-                  {/* Actions: Review, Verify, Reject, View - STRICTLY NO ASSIGN BUTTON HERE */}
-                  <div className="flex items-center justify-between text-[10px] pt-1.5 border-t border-slate-800/80 gap-1.5">
+                  {/* Actions: Review, Verify, Reject, View */}
+                  <div className="flex items-center justify-between text-[10px] pt-1.5 border-t border-[#D5DEE8] gap-1.5">
                     <div className="flex items-center gap-1">
                       {!isVerified && onVerifyProblem && (
                         <button
@@ -349,7 +349,7 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                             e.stopPropagation();
                             onVerifyProblem(item.id);
                           }}
-                          className="px-2.5 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold text-[10px] transition-all flex items-center gap-1 cursor-pointer active:scale-95 shadow-sm"
+                          className="px-2.5 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] transition-all flex items-center gap-1 cursor-pointer active:scale-95 shadow-xs"
                           title="Verify detection"
                         >
                           <CheckCircle2 className="w-3.5 h-3.5" />
@@ -363,7 +363,7 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                             e.stopPropagation();
                             onRejectProblem(item.id);
                           }}
-                          className="px-2 py-1 rounded bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-800 text-[10px] transition-colors cursor-pointer"
+                          className="px-2 py-1 rounded bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 text-[10px] transition-colors cursor-pointer"
                           title="Reject detection as false positive"
                         >
                           Reject
@@ -378,7 +378,7 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                           e.stopPropagation();
                           onSelectIssue(item);
                         }}
-                        className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] transition-colors border border-slate-700 cursor-pointer"
+                        className="px-2.5 py-1 rounded bg-white hover:bg-slate-50 text-[#172033] text-[10px] transition-colors border border-[#D5DEE8] cursor-pointer shadow-2xs"
                         title="View problem details and AI detection evidence"
                       >
                         View
@@ -396,13 +396,13 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
           <div className="flex flex-col gap-2 min-w-max py-0.5">
             <div className="flex items-center gap-2.5">
               {(currentTrackingTab === 'PENDING' ? pendingIssues : currentTrackingTab === 'IN_PROGRESS' ? inProgressIssues : solvedIssues).length === 0 ? (
-                <div className="p-4 rounded-lg bg-slate-950/80 border border-slate-800 text-slate-400 flex items-center gap-3">
-                  <AlertCircle className="w-5 h-5 text-slate-500 shrink-0" />
+                <div className="p-4 rounded-lg bg-white border border-[#D5DEE8] text-[#526071] flex items-center gap-3 shadow-xs">
+                  <AlertCircle className="w-5 h-5 text-slate-400 shrink-0" />
                   <div>
-                    <div className="font-semibold text-slate-200">
+                    <div className="font-semibold text-[#172033]">
                       No problems currently with status: {currentTrackingTab === 'PENDING' ? 'Pending' : currentTrackingTab === 'IN_PROGRESS' ? 'In Progress' : 'Solved'}
                     </div>
-                    <div className="text-[11px] text-slate-500">
+                    <div className="text-[11px] text-[#7A8797]">
                       {currentTrackingTab === 'PENDING' && 'All problems have work orders initiated or have been resolved.'}
                       {currentTrackingTab === 'IN_PROGRESS' && 'No work orders currently active on site. Open a pending problem to dispatch or update work order.'}
                       {currentTrackingTab === 'SOLVED' && 'No problems have been marked as resolved yet.'}
@@ -419,22 +419,22 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                     <div
                       key={item.id}
                       onClick={() => onSelectIssue(item)}
-                      className={`p-2.5 rounded-lg border transition-all cursor-pointer w-88 flex flex-col justify-between shadow-sm ${
+                      className={`p-2.5 rounded-lg border transition-all cursor-pointer w-88 flex flex-col justify-between shadow-xs ${
                         solved
-                          ? 'bg-emerald-950/30 border-emerald-700/70 hover:border-emerald-500'
+                          ? 'bg-emerald-50/40 border-emerald-300 hover:border-emerald-500'
                           : inProgress
-                          ? 'bg-cyan-950/30 border-cyan-600/70 hover:border-cyan-400'
-                          : 'bg-slate-950 border-slate-800 hover:border-slate-700'
+                          ? 'bg-cyan-50/40 border-cyan-300 hover:border-cyan-500'
+                          : 'bg-white border-[#D5DEE8] hover:border-slate-300'
                       }`}
                     >
                       <div className="flex items-center justify-between mb-1.5">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-cyan-400 font-bold">{item.id}</span>
+                          <span className="text-cyan-700 font-bold">{item.id}</span>
                           <span
                             className={`px-1.5 py-0.2 rounded text-[9px] font-bold uppercase border ${
                               item.priority === 'Critical' || item.severity === 'HIGH'
-                                ? 'bg-rose-950 text-rose-300 border-rose-700'
-                                : 'bg-amber-950 text-amber-300 border-amber-700'
+                                ? 'bg-rose-50 text-rose-700 border-rose-300'
+                                : 'bg-amber-50 text-amber-700 border-amber-300'
                             }`}
                           >
                             {item.priority || item.severity} Priority
@@ -444,54 +444,54 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                         <span
                           className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase border font-mono ${
                             solved
-                              ? 'bg-emerald-950 text-emerald-300 border-emerald-600'
+                              ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
                               : inProgress
-                              ? 'bg-cyan-950 text-cyan-300 border-cyan-600'
-                              : 'bg-amber-950 text-amber-300 border-amber-600'
+                              ? 'bg-cyan-50 text-cyan-700 border-cyan-300'
+                              : 'bg-amber-50 text-amber-700 border-amber-300'
                           }`}
                         >
                           {solved ? '✓ Solved' : inProgress ? '⚡ In Progress' : '⏳ Pending'}
                         </span>
                       </div>
 
-                      <div className="text-slate-200 font-sans font-semibold text-[11px] truncate mb-0.5">
+                      <div className="text-[#172033] font-sans font-semibold text-[11px] truncate mb-0.5">
                         {item.title}
                       </div>
 
-                      <div className="text-[10px] text-slate-400 truncate mb-1.5 flex items-center gap-1">
+                      <div className="text-[10px] text-[#526071] truncate mb-1.5 flex items-center gap-1">
                         <span>📍 {item.locationName || item.location?.address || `${item.location?.lat.toFixed(4)}, ${item.location?.lng.toFixed(4)}`}</span>
                       </div>
 
                       {/* Workflow Details: Verification, Assignment, Status */}
-                      <div className="p-2 rounded bg-[#070b14] border border-slate-800/80 mb-2 space-y-1 text-[10px] font-mono">
+                      <div className="p-2 rounded bg-[#F4F7FA] border border-[#D5DEE8] mb-2 space-y-1 text-[10px] font-mono">
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-400">Verification:</span>
-                          <span className={item.verification?.includes('VERIFIED') || item.verification?.includes('Verified') ? 'text-emerald-400 font-bold' : 'text-amber-400 font-bold'}>
+                          <span className="text-[#526071]">Verification:</span>
+                          <span className={item.verification?.includes('VERIFIED') || item.verification?.includes('Verified') ? 'text-emerald-700 font-bold' : 'text-amber-700 font-bold'}>
                             {item.verification || 'PENDING VERIFICATION'}
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-400">Assignment:</span>
-                          <span className={item.assignedAuthority ? 'text-indigo-300 font-bold truncate max-w-[160px]' : 'text-slate-500'}>
+                          <span className="text-[#526071]">Assignment:</span>
+                          <span className={item.assignedAuthority ? 'text-indigo-700 font-bold truncate max-w-[160px]' : 'text-[#7A8797]'}>
                             {item.assignedAuthority || 'UNASSIGNED'}
                           </span>
                         </div>
                         {item.assignedPerson && (
-                          <div className="flex items-center justify-between pt-0.5 border-t border-slate-800/60">
-                            <span className="text-slate-500">Crew Lead:</span>
-                            <span className="text-slate-300 truncate max-w-[160px]">{item.assignedPerson}</span>
+                          <div className="flex items-center justify-between pt-0.5 border-t border-[#D5DEE8]">
+                            <span className="text-[#7A8797]">Crew Lead:</span>
+                            <span className="text-[#172033] truncate max-w-[160px]">{item.assignedPerson}</span>
                           </div>
                         )}
                         {solved && (
                           <div className="flex items-center justify-between">
-                            <span className="text-slate-400">Road Condition:</span>
-                            <span className="text-emerald-300 font-bold">Repaired</span>
+                            <span className="text-[#526071]">Road Condition:</span>
+                            <span className="text-emerald-700 font-bold">Repaired</span>
                           </div>
                         )}
                       </div>
 
                       {/* Status Progression Controls & Action Buttons */}
-                      <div className="flex items-center justify-between text-[10px] pt-1.5 border-t border-slate-800/80 gap-1">
+                      <div className="flex items-center justify-between text-[10px] pt-1.5 border-t border-[#D5DEE8] gap-1">
                         <div className="flex items-center gap-1">
                           {pending && onUpdateStatus && (
                             <button
@@ -500,10 +500,10 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                                 e.stopPropagation();
                                 onUpdateStatus(item.id, 'In Progress');
                               }}
-                              className="px-2 py-0.5 rounded bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold transition-colors flex items-center gap-1 cursor-pointer"
+                              className="px-2 py-0.5 rounded bg-cyan-600 hover:bg-cyan-500 text-white font-bold transition-colors flex items-center gap-1 cursor-pointer shadow-2xs"
                               title="Start Work (moves to In Progress)"
                             >
-                              <Play className="w-3 h-3 fill-slate-950" />
+                              <Play className="w-3 h-3 fill-white" />
                               <span>Start Work</span>
                             </button>
                           )}
@@ -514,10 +514,10 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                                 e.stopPropagation();
                                 onUpdateStatus(item.id, 'Solved');
                               }}
-                              className="px-2 py-0.5 rounded bg-emerald-600 hover:bg-emerald-500 text-slate-950 font-bold transition-colors flex items-center gap-1 cursor-pointer"
+                              className="px-2 py-0.5 rounded bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-colors flex items-center gap-1 cursor-pointer shadow-2xs"
                               title="Mark problem as Solved"
                             >
-                              <CheckCircle2 className="w-3 h-3 text-slate-950" />
+                              <CheckCircle2 className="w-3 h-3 text-white" />
                               <span>Mark Solved</span>
                             </button>
                           )}
@@ -528,7 +528,7 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                                 e.stopPropagation();
                                 onUpdateStatus(item.id, 'In Progress');
                               }}
-                              className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer"
+                              className="px-2 py-0.5 rounded bg-white hover:bg-slate-50 text-[#172033] border border-[#D5DEE8] transition-colors cursor-pointer shadow-2xs"
                               title="Reopen problem to In Progress"
                             >
                               Reopen
@@ -545,8 +545,8 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                               }}
                               className={`px-2 py-0.5 rounded transition-colors cursor-pointer flex items-center gap-1 ${
                                 item.assignedAuthority
-                                  ? 'bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700'
-                                  : 'bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold shadow-sm'
+                                  ? 'bg-white hover:bg-slate-50 text-cyan-700 border border-[#D5DEE8]'
+                                  : 'bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold shadow-2xs'
                               }`}
                               title={item.assignedAuthority ? 'Reassign problem' : 'Assign problem to department'}
                             >
@@ -560,7 +560,7 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
                               e.stopPropagation();
                               onSelectIssue(item);
                             }}
-                            className="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer"
+                            className="px-2 py-0.5 rounded bg-white hover:bg-slate-50 text-[#172033] border border-[#D5DEE8] transition-colors cursor-pointer shadow-2xs"
                           >
                             {solved ? 'View Record' : 'View'}
                           </button>

@@ -475,35 +475,35 @@ export const IssueDetailModal: React.FC<IssueDetailModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[2000] flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md select-none overflow-y-auto">
+    <div className="fixed inset-0 z-[2000] flex items-center justify-center p-3 sm:p-6 bg-slate-900/40 backdrop-blur-xs select-none overflow-y-auto">
       
       {/* Modal Container */}
-      <div className="relative w-full max-w-5xl bg-[#090e1a] border border-cyan-900/80 rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.9)] text-slate-100 flex flex-col max-h-[92vh] overflow-hidden my-auto">
+      <div className="relative w-full max-w-5xl bg-white border border-[#D5DEE8] rounded-xl shadow-2xl text-[#172033] flex flex-col max-h-[92vh] overflow-hidden my-auto">
         
         {/* Modal Top Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-800 bg-[#0c1322]">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-[#D5DEE8] bg-[#F9FBFC]">
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-300 font-mono text-xs font-bold shadow-sm">
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-cyan-50 border border-cyan-200 text-cyan-700 font-mono text-xs font-bold shadow-2xs">
               AI
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-mono text-sm font-bold text-cyan-400">
+                <span className="font-mono text-sm font-bold text-cyan-700">
                   {issue.id}
                 </span>
-                <span className="text-slate-600">•</span>
-                <span className="text-xs font-mono px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-slate-300 capitalize">
+                <span className="text-slate-300">•</span>
+                <span className="text-xs font-mono px-2 py-0.5 rounded bg-[#EEF2F6] border border-[#D5DEE8] text-[#526071] capitalize">
                   {issue.type.replace('_', ' ')}
                 </span>
                 <span
                   className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase ${
                     status === 'RESOLVED' || status === 'Solved' || status === 'SOLVED'
-                      ? 'bg-emerald-950 text-emerald-300 border border-emerald-700'
+                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-300'
                       : status === 'In Progress' || status === 'IN_PROGRESS' || status === 'DISPATCHED'
-                      ? 'bg-cyan-950 text-cyan-300 border border-cyan-700'
+                      ? 'bg-cyan-50 text-cyan-700 border border-cyan-300'
                       : issue.severity === 'HIGH'
-                      ? 'bg-rose-950 text-rose-300 border border-rose-700'
-                      : 'bg-amber-950 text-amber-300 border border-amber-700'
+                      ? 'bg-rose-50 text-rose-700 border border-rose-300'
+                      : 'bg-amber-50 text-amber-700 border border-amber-300'
                   }`}
                 >
                   {status === 'RESOLVED' || status === 'Solved' || status === 'SOLVED'
@@ -513,7 +513,7 @@ export const IssueDetailModal: React.FC<IssueDetailModalProps> = ({
                     : `${issue.severity} SEVERITY`}
                 </span>
               </div>
-              <h2 className="text-sm font-semibold text-slate-200 mt-0.5">
+              <h2 className="text-sm font-semibold text-[#172033] mt-0.5">
                 {issue.title}
               </h2>
             </div>
@@ -522,42 +522,42 @@ export const IssueDetailModal: React.FC<IssueDetailModalProps> = ({
           <button
             id="btn-close-issue-detail"
             onClick={onClose}
-            className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700 transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg bg-white hover:bg-slate-50 text-[#526071] hover:text-[#172033] border border-[#D5DEE8] transition-colors cursor-pointer shadow-2xs"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Linear Workflow Progress Stepper */}
-        <div className="bg-[#070c16] border-b border-slate-800/90 px-5 py-2.5">
+        <div className="bg-[#EEF2F6] border-b border-[#D5DEE8] px-5 py-2.5">
           <div className="flex items-center justify-between gap-2 overflow-x-auto scrollbar-none text-xs font-mono">
             {/* Step 1: AI Detection */}
             <div className="flex items-center gap-2 shrink-0">
-              <div className="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500 flex items-center justify-center font-bold text-[11px]">
+              <div className="w-6 h-6 rounded-full bg-cyan-100 text-cyan-800 border border-cyan-400 flex items-center justify-center font-bold text-[11px]">
                 ✓
               </div>
               <div>
-                <div className="font-bold text-slate-200 text-[11px]">1. AI Detection</div>
-                <div className="text-[10px] text-cyan-400 font-medium">{issue.confidence}% YOLOv8</div>
+                <div className="font-bold text-[#172033] text-[11px]">1. AI Detection</div>
+                <div className="text-[10px] text-cyan-700 font-medium">{issue.confidence}% YOLOv8</div>
               </div>
             </div>
 
-            <div className="h-0.5 w-4 sm:w-8 bg-slate-800 shrink-0" />
+            <div className="h-0.5 w-4 sm:w-8 bg-slate-300 shrink-0" />
 
             {/* Step 2: Authority & Verification */}
             <div className="flex items-center gap-2 shrink-0">
               <div className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-[11px] border ${
                 verification === 'Verified' || verification === 'VERIFIED' || verification === 'Verified by Staff'
-                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500'
+                  ? 'bg-emerald-100 text-emerald-800 border-emerald-400'
                   : verification === 'Rejected' || verification === 'REJECTED' || verification === 'FALSE_POSITIVE' || verification === 'False Positive'
-                  ? 'bg-rose-500/20 text-rose-300 border-rose-500'
-                  : 'bg-amber-500/20 text-amber-300 border-amber-500'
+                  ? 'bg-rose-100 text-rose-800 border-rose-400'
+                  : 'bg-amber-100 text-amber-800 border-amber-400'
               }`}>
                 {verification === 'Verified' || verification === 'VERIFIED' || verification === 'Verified by Staff' ? '✓' : '2'}
               </div>
               <div>
-                <div className="font-bold text-slate-200 text-[11px]">2. Authority &amp; Verification</div>
-                <div className="text-[10px] text-slate-400">
+                <div className="font-bold text-[#172033] text-[11px]">2. Authority &amp; Verification</div>
+                <div className="text-[10px] text-[#526071]">
                   {verification === 'Verified' || verification === 'VERIFIED' || verification === 'Verified by Staff'
                     ? 'Verified by Staff'
                     : verification === 'Rejected' || verification === 'REJECTED' || verification === 'FALSE_POSITIVE' || verification === 'False Positive'
@@ -567,46 +567,46 @@ export const IssueDetailModal: React.FC<IssueDetailModalProps> = ({
               </div>
             </div>
 
-            <div className="h-0.5 w-4 sm:w-8 bg-slate-800 shrink-0" />
+            <div className="h-0.5 w-4 sm:w-8 bg-slate-300 shrink-0" />
 
             {/* Step 3: Assign Problem */}
             <div className="flex items-center gap-2 shrink-0">
               <div className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-[11px] border ${
                 issue.assignedAuthority
-                  ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500'
-                  : 'bg-slate-900 text-slate-400 border-slate-700'
+                  ? 'bg-indigo-100 text-indigo-800 border-indigo-400'
+                  : 'bg-white text-[#7A8797] border-[#D5DEE8]'
               }`}>
                 {issue.assignedAuthority ? '✓' : '3'}
               </div>
               <div>
-                <div className="font-bold text-slate-200 text-[11px]">3. Assign Problem</div>
-                <div className="text-[10px] text-slate-400 truncate max-w-[120px]">
+                <div className="font-bold text-[#172033] text-[11px]">3. Assign Problem</div>
+                <div className="text-[10px] text-[#526071] truncate max-w-[120px]">
                   {issue.assignedAuthority || 'Unassigned'}
                 </div>
               </div>
             </div>
 
-            <div className="h-0.5 w-4 sm:w-8 bg-slate-800 shrink-0" />
+            <div className="h-0.5 w-4 sm:w-8 bg-slate-300 shrink-0" />
 
             {/* Step 4: Problem Status Tracking */}
             <div className="flex items-center gap-2 shrink-0">
               <div className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-[11px] border ${
                 status === 'Solved' || status === 'SOLVED' || status === 'RESOLVED'
-                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500'
+                  ? 'bg-emerald-100 text-emerald-800 border-emerald-400'
                   : status === 'In Progress' || status === 'IN_PROGRESS' || status === 'DISPATCHED'
-                  ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500 animate-pulse'
-                  : 'bg-amber-500/20 text-amber-300 border-amber-500'
+                  ? 'bg-cyan-100 text-cyan-800 border-cyan-400 animate-pulse'
+                  : 'bg-amber-100 text-amber-800 border-amber-400'
               }`}>
                 {status === 'Solved' || status === 'SOLVED' || status === 'RESOLVED' ? '✓' : '4'}
               </div>
               <div>
-                <div className="font-bold text-slate-200 text-[11px]">4. Status Tracking</div>
-                <div className="text-[10px] font-semibold text-cyan-300">
+                <div className="font-bold text-[#172033] text-[11px]">4. Status Tracking</div>
+                <div className="text-[10px] font-semibold text-cyan-700">
                   {status === 'IN_PROGRESS' || status === 'In Progress' || status === 'DISPATCHED'
-                    ? 'In Progress'
+                    ? 'In Progress (Crew Active)'
                     : status === 'Solved' || status === 'SOLVED' || status === 'RESOLVED'
-                    ? 'Solved'
-                    : status}
+                    ? 'Solved & Repaired'
+                    : 'Pending Dispatch'}
                 </div>
               </div>
             </div>

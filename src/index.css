@@ -1,8 +1,37 @@
 @import "tailwindcss";
 
+:root {
+  --bg-primary: #F4F7FA;
+  --bg-secondary: #EEF2F6;
+  --surface: #FFFFFF;
+  --surface-elevated: #F9FBFC;
+  --border: #D5DEE8;
+  --text-primary: #172033;
+  --text-secondary: #526071;
+  --text-muted: #7A8797;
+  --accent: #00AFC6;
+  --accent-hover: #0098AD;
+}
+
+@theme {
+  --color-slate-50: #0f172a;
+  --color-slate-100: #172033;
+  --color-slate-200: #1e293b;
+  --color-slate-300: #334155;
+  --color-slate-400: #526071;
+  --color-slate-500: #7a8797;
+  --color-slate-600: #94a3b8;
+  --color-slate-700: #cbd5e1;
+  --color-slate-800: #d5dee8;
+  --color-slate-900: #eef2f6;
+  --color-slate-950: #f4f7fa;
+}
+
 @layer base {
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
   }
   
   .font-mono {
@@ -10,79 +39,277 @@
   }
 }
 
-/* Custom terminal scrollbars */
+/* Custom light scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0b0f19;
+  background: #EEF2F6;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #CBD5E1;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #94A3B8;
 }
 
-/* MapLibre GL dark container & custom popups */
+/* MapLibre GL light container & custom popups */
 .maplibregl-map {
   font-family: 'Plus Jakarta Sans', sans-serif !important;
-  background-color: #080b11 !important;
+  background-color: #F4F7FA !important;
 }
 
 .maplibregl-popup-content {
-  background: #0d121f !important;
-  color: #f1f5f9 !important;
-  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  background: #FFFFFF !important;
+  color: #172033 !important;
+  border: 1px solid #D5DEE8 !important;
   border-radius: 8px !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.8), 0 0 15px rgba(6, 182, 212, 0.2) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 0 15px rgba(0, 175, 198, 0.1) !important;
   padding: 0 !important;
 }
 
 .maplibregl-popup-tip {
-  border-top-color: #0d121f !important;
-  border-bottom-color: #0d121f !important;
+  border-top-color: #FFFFFF !important;
+  border-bottom-color: #FFFFFF !important;
 }
 
 .maplibregl-ctrl-attrib {
-  background-color: rgba(9, 14, 26, 0.8) !important;
-  color: #64748b !important;
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  color: #526071 !important;
   font-size: 10px !important;
 }
 
 .maplibregl-ctrl-attrib a {
-  color: #38bdf8 !important;
+  color: #00AFC6 !important;
 }
 
-/* Leaflet dark tile custom filters and styling */
+/* Leaflet light map tiles and styling */
 .dark-map-tiles .leaflet-tile {
-  filter: brightness(0.7) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.75);
+  filter: none;
 }
 
 .leaflet-container {
-  background-color: #0b0f19 !important;
+  background-color: #F4F7FA !important;
   font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 
 .leaflet-popup-content-wrapper {
-  background: #0d121f !important;
-  color: #f1f5f9 !important;
-  border: 1px solid rgba(56, 189, 248, 0.25) !important;
+  background: #FFFFFF !important;
+  color: #172033 !important;
+  border: 1px solid #D5DEE8 !important;
   border-radius: 8px !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.8), 0 0 15px rgba(6, 182, 212, 0.15) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 0 15px rgba(0, 175, 198, 0.1) !important;
   padding: 0 !important;
 }
 
 .leaflet-popup-tip {
-  background: #0d121f !important;
-  border: 1px solid rgba(56, 189, 248, 0.25) !important;
+  background: #FFFFFF !important;
+  border: 1px solid #D5DEE8 !important;
 }
 
 .leaflet-popup-content {
   margin: 0 !important;
   line-height: 1.4 !important;
+}
+
+/* Light Theme Overrides for dark arbitrary hex classes */
+.bg-\[\#060a13\] {
+  background-color: var(--bg-primary) !important;
+}
+.bg-\[\#080b11\] {
+  background-color: var(--bg-primary) !important;
+}
+.bg-\[\#090d16\],
+.bg-\[\#090d16\]\/85,
+.bg-\[\#090d16\]\/90 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+}
+.bg-\[\#090e1a\],
+.bg-\[\#090e1a\]\/85,
+.bg-\[\#090e1a\]\/90,
+.bg-\[\#090e1a\]\/95 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+}
+.bg-\[\#0c121e\],
+.bg-\[\#0c121e\]\/85,
+.bg-\[\#0c121e\]\/90 {
+  background-color: var(--surface-elevated) !important;
+}
+.bg-\[\#0c1322\],
+.bg-\[\#0c1322\]\/95 {
+  background-color: var(--surface-elevated) !important;
+}
+.bg-\[\#0b1322\] {
+  background-color: var(--surface) !important;
+}
+.bg-\[\#070b14\] {
+  background-color: var(--bg-secondary) !important;
+}
+.bg-\[\#070c16\] {
+  background-color: var(--bg-secondary) !important;
+}
+.bg-\[\#070e1a\] {
+  background-color: var(--bg-secondary) !important;
+}
+.bg-\[\#101827\] {
+  background-color: #F0FDFE !important;
+}
+.bg-\[\#111928\] {
+  background-color: #F8FAFC !important;
+}
+.bg-\[\#08121a\] {
+  background-color: #F0FDF4 !important;
+}
+.bg-\[\#180b0e\] {
+  background-color: #FFF1F2 !important;
+}
+.bg-\[\#121622\] {
+  background-color: #FFFBEB !important;
+}
+.bg-\[\#0b101d\],
+.bg-\[\#090b10\],
+.bg-\[\#080d19\],
+.bg-\[\#0b121e\],
+.bg-\[\#080e1a\],
+.bg-\[\#0d1424\] {
+  background-color: var(--surface-elevated) !important;
+}
+.bg-\[\#060a12\],
+.bg-\[\#070b12\],
+.bg-\[\#070a14\] {
+  background-color: var(--bg-secondary) !important;
+}
+
+/* Modal backdrops in light theme */
+.fixed.inset-0.bg-black\/80,
+.fixed.inset-0.bg-slate-950\/80 {
+  background-color: rgba(15, 23, 42, 0.45) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+/* Secondary buttons: white/light gray background + dark text + subtle border */
+button.bg-slate-900,
+button.bg-slate-800 {
+  background-color: #FFFFFF !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+button.bg-slate-900:hover,
+button.bg-slate-800:hover {
+  background-color: #F8FAFC !important;
+  color: var(--text-primary) !important;
+}
+
+/* Form inputs in light mode */
+input.bg-slate-950,
+input.bg-slate-900,
+input.bg-slate-950\/90,
+textarea.bg-slate-900,
+select.bg-slate-900 {
+  background-color: #FFFFFF !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--accent) !important;
+}
+
+/* Border overrides */
+.border-cyan-950\/60,
+.border-cyan-950\/80,
+.border-cyan-950,
+.border-cyan-900\/50,
+.border-cyan-900\/80,
+.border-cyan-900,
+.border-cyan-800\/60,
+.border-slate-800,
+.border-slate-800\/60,
+.border-slate-800\/80,
+.border-slate-800\/90,
+.border-slate-900 {
+  border-color: var(--border) !important;
+}
+
+/* Light Status Badge Palettes */
+.bg-cyan-950,
+.bg-cyan-950\/40,
+.bg-cyan-950\/70,
+.bg-cyan-950\/80 {
+  background-color: #ECFEFF !important;
+  color: #0E7490 !important;
+}
+.border-cyan-800 {
+  border-color: #A5F3FC !important;
+}
+
+.bg-emerald-950,
+.bg-emerald-950\/30,
+.bg-emerald-950\/40,
+.bg-emerald-950\/80,
+.bg-emerald-950\/90 {
+  background-color: #ECFDF5 !important;
+  color: #047857 !important;
+}
+.border-emerald-700,
+.border-emerald-800,
+.border-emerald-800\/40,
+.border-emerald-900\/60 {
+  border-color: #A7F3D0 !important;
+}
+
+.bg-amber-950,
+.bg-amber-950\/40,
+.bg-amber-950\/80,
+.bg-amber-950\/90 {
+  background-color: #FFFBEB !important;
+  color: #B45309 !important;
+}
+.border-amber-700,
+.border-amber-800,
+.border-amber-800\/40 {
+  border-color: #FDE68A !important;
+}
+
+.bg-rose-950,
+.bg-rose-950\/40,
+.bg-rose-950\/80,
+.bg-rose-950\/90 {
+  background-color: #FFF1F2 !important;
+  color: #BE123C !important;
+}
+.border-rose-700,
+.border-rose-800,
+.border-rose-800\/40,
+.border-rose-900\/60 {
+  border-color: #FECDD3 !important;
+}
+
+/* In light theme, adjust text high-visibility for statuses */
+.text-cyan-300,
+.text-cyan-400 {
+  color: #0891b2;
+}
+.text-emerald-300,
+.text-emerald-400 {
+  color: #059669;
+}
+.text-amber-300,
+.text-amber-400 {
+  color: #d97706;
+}
+.text-rose-300,
+.text-rose-400 {
+  color: #e11d48;
+}
+
+/* Inputs and interactive elements in light mode */
+input, select, textarea {
+  color: var(--text-primary);
+}
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted);
 }
 
 /* Scanner line animation for bus camera HUD */

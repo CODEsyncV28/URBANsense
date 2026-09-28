@@ -9,6 +9,7 @@ import {
   Layers
 } from 'lucide-react';
 import { RoadIssue, BusFleet, IssueType, Severity } from '../types';
+import { TransitNetworkBackground } from './TransitNetworkBackground';
 
 interface CityMapProps {
   issues: RoadIssue[];
@@ -27,6 +28,7 @@ export const CityMap: React.FC<CityMapProps> = ({
   busFleet,
   selectedIssue,
   onSelectIssue,
+  onSelectBus,
   filterSeverity,
   setFilterSeverity,
 }) => {
@@ -37,23 +39,33 @@ export const CityMap: React.FC<CityMapProps> = ({
   const mediumHazards = activeIssues.filter((i) => i.severity === 'MEDIUM');
 
   return (
-    <div className="relative w-full h-full flex flex-col bg-transparent overflow-hidden select-none">
+    <div className="relative w-full h-full flex flex-col bg-[#F4F7FA] overflow-hidden select-none">
       
+      {/* 0. Live Interactive AI Transit System Visualization Canvas Layer */}
+      <TransitNetworkBackground
+        issues={issues}
+        busFleet={busFleet}
+        onSelectIssue={onSelectIssue}
+        onSelectBus={onSelectBus}
+        filterSeverity={filterSeverity}
+        selectedIssue={selectedIssue}
+      />
+
       {/* Floating Top Control Bar (Left) - Non-map Telemetry HUD */}
-      <div className="absolute top-3 left-3 z-10 flex flex-wrap items-center gap-2 bg-[#090e1a]/85 backdrop-blur-md p-1.5 px-2.5 rounded-lg border border-cyan-900/50 shadow-xl pointer-events-auto">
-        <div className="flex items-center gap-2 pr-2 border-r border-slate-800 text-xs font-mono">
-          <Radio className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
-          <span className="text-cyan-300 font-bold tracking-wider">AI SYSTEM VISUALIZATION</span>
+      <div className="absolute top-3 left-3 z-10 flex flex-wrap items-center gap-2 bg-white/95 backdrop-blur-md p-1.5 px-2.5 rounded-lg border border-[#D5DEE8] shadow-md pointer-events-auto">
+        <div className="flex items-center gap-2 pr-2 border-r border-[#D5DEE8] text-xs font-mono">
+          <Radio className="w-3.5 h-3.5 text-cyan-600 animate-pulse" />
+          <span className="text-cyan-700 font-bold tracking-wider">AI SYSTEM VISUALIZATION</span>
         </div>
 
-        <div className="flex items-center gap-3 text-[11px] font-mono text-slate-400">
+        <div className="flex items-center gap-3 text-[11px] font-mono text-[#526071]">
           <span className="flex items-center gap-1">
-            <Layers className="w-3 h-3 text-slate-500" />
-            <span>10 Abstract Corridors</span>
+            <Layers className="w-3 h-3 text-slate-400" />
+            <span>Smart-City Transit Grid</span>
           </span>
-          <span className="text-slate-600">&bull;</span>
-          <span className="flex items-center gap-1 text-emerald-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+          <span className="text-slate-300">&bull;</span>
+          <span className="flex items-center gap-1 text-emerald-600">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
             <span>Telemetry Active</span>
           </span>
         </div>
@@ -61,9 +73,9 @@ export const CityMap: React.FC<CityMapProps> = ({
 
       {/* Floating Filter Badges (Top-Right) */}
       <div className="absolute top-3 right-3 z-10 flex items-center gap-2 pointer-events-auto">
-        <div className="bg-[#090e1a]/85 backdrop-blur-md px-2 py-1.5 rounded-lg border border-slate-800 shadow-xl flex items-center gap-1.5 text-xs font-mono">
+        <div className="bg-white/95 backdrop-blur-md px-2 py-1.5 rounded-lg border border-[#D5DEE8] shadow-md flex items-center gap-1.5 text-xs font-mono">
           <Filter className="w-3.5 h-3.5 text-slate-400" />
-          <span className="text-slate-500 text-[11px]">Severity:</span>
+          <span className="text-[#7A8797] text-[11px]">Severity:</span>
           {(['ALL', 'HIGH', 'MEDIUM', 'LOW'] as const).map((sev) => (
             <button
               key={sev}
@@ -71,13 +83,13 @@ export const CityMap: React.FC<CityMapProps> = ({
               className={`px-1.5 py-0.5 rounded text-[10px] font-bold transition-all cursor-pointer ${
                 filterSeverity === sev
                   ? sev === 'HIGH'
-                    ? 'bg-rose-500 text-white shadow-[0_0_8px_rgba(239,68,68,0.5)]'
+                    ? 'bg-rose-500 text-white shadow-xs'
                     : sev === 'MEDIUM'
                     ? 'bg-amber-500 text-slate-950 font-bold'
                     : sev === 'LOW'
                     ? 'bg-emerald-500 text-slate-950 font-bold'
-                    : 'bg-cyan-500 text-slate-950 font-bold'
-                  : 'text-slate-400 hover:text-slate-200'
+                    : 'bg-[#00AFC6] text-white font-bold'
+                  : 'text-[#526071] hover:text-[#172033]'
               }`}
             >
               {sev}
@@ -88,43 +100,43 @@ export const CityMap: React.FC<CityMapProps> = ({
 
       {/* Selected Anomaly Inspector Callout (if an issue is selected in feed or workflow) */}
       {selectedIssue && (
-        <div className="absolute top-16 left-1/2 -translate-x-1/2 z-20 max-w-md w-[92%] sm:w-auto bg-[#090e1a]/95 backdrop-blur-md border border-cyan-500/60 rounded-lg p-3 shadow-[0_0_25px_rgba(6,182,212,0.25)] pointer-events-auto animate-in fade-in zoom-in-95 duration-150">
+        <div className="absolute top-16 left-1/2 -translate-x-1/2 z-20 max-w-md w-[92%] sm:w-auto bg-white/95 backdrop-blur-md border border-[#00AFC6] rounded-lg p-3 shadow-xl pointer-events-auto animate-in fade-in zoom-in-95 duration-150">
           <div className="flex items-start justify-between gap-3 mb-1.5">
             <div className="flex items-center gap-2">
               <span className={`px-1.5 py-0.5 rounded text-[10px] font-mono font-bold ${
-                selectedIssue.severity === 'HIGH' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' :
-                selectedIssue.severity === 'MEDIUM' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' :
-                'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                selectedIssue.severity === 'HIGH' ? 'bg-rose-50 text-rose-700 border border-rose-300' :
+                selectedIssue.severity === 'MEDIUM' ? 'bg-amber-50 text-amber-700 border border-amber-300' :
+                'bg-cyan-50 text-cyan-700 border border-cyan-300'
               }`}>
                 {selectedIssue.severity} HAZARD
               </span>
-              <span className="text-xs font-mono text-cyan-400 font-semibold">{selectedIssue.id}</span>
+              <span className="text-xs font-mono text-cyan-700 font-semibold">{selectedIssue.id}</span>
             </div>
             <button
               onClick={() => onSelectIssue(selectedIssue)}
-              className="text-xs font-mono text-slate-400 hover:text-slate-200"
+              className="text-xs font-mono text-cyan-700 hover:text-cyan-900 cursor-pointer"
             >
               [Inspect Evidence]
             </button>
           </div>
-          <p className="text-xs text-slate-100 font-medium line-clamp-1 mb-1">{selectedIssue.title}</p>
-          <div className="flex items-center gap-3 text-[11px] font-mono text-slate-400">
+          <p className="text-xs text-[#172033] font-medium line-clamp-1 mb-1">{selectedIssue.title}</p>
+          <div className="flex items-center gap-3 text-[11px] font-mono text-[#526071]">
             <span className="truncate">{selectedIssue.locationName}</span>
-            <span className="text-cyan-400 shrink-0">{(selectedIssue.confidence * 100).toFixed(0)}% Conf</span>
+            <span className="text-cyan-700 shrink-0">{(selectedIssue.confidence * 100).toFixed(0)}% Conf</span>
           </div>
         </div>
       )}
 
       {/* Subtle Corner Telemetry Grids (Control Room Ambient Details) */}
-      <div className="absolute top-14 left-4 z-0 pointer-events-none hidden sm:block opacity-30">
-        <div className="flex items-center gap-1.5 text-[9px] font-mono text-cyan-400/80">
+      <div className="absolute top-14 left-4 z-0 pointer-events-none hidden sm:block opacity-40">
+        <div className="flex items-center gap-1.5 text-[9px] font-mono text-cyan-600">
           <Crosshair className="w-3 h-3 text-cyan-500" />
           <span>SYS.SEC // 04-TRANSIT</span>
         </div>
       </div>
 
-      <div className="absolute bottom-16 right-4 z-0 pointer-events-none hidden sm:block opacity-25">
-        <div className="text-right text-[9px] font-mono text-slate-500 leading-tight">
+      <div className="absolute bottom-16 right-4 z-0 pointer-events-none hidden sm:block opacity-35">
+        <div className="text-right text-[9px] font-mono text-[#7A8797] leading-tight">
           <div>LOC.STREAM // DECORATIVE_BG</div>
           <div>RES // 60FPS_VECTOR_CANVAS</div>
         </div>
@@ -132,49 +144,66 @@ export const CityMap: React.FC<CityMapProps> = ({
 
       {/* Floating Bottom Legend & Telemetry Status */}
       {showLegend && (
-        <div className="absolute bottom-3 left-3 z-10 bg-[#090e1a]/85 backdrop-blur-md p-2.5 rounded-lg border border-cyan-950/80 shadow-2xl max-w-xs hidden md:block pointer-events-auto">
-          <div className="flex items-center justify-between gap-4 border-b border-slate-800 pb-1.5 mb-2">
+        <div className="absolute bottom-3 left-3 z-10 bg-white/95 backdrop-blur-md p-2.5 rounded-lg border border-[#D5DEE8] shadow-xl max-w-xs hidden md:block pointer-events-auto">
+          <div className="flex items-center justify-between gap-4 border-b border-[#D5DEE8] pb-1.5 mb-2">
             <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-              <span className="font-mono text-[11px] font-bold text-slate-200">TRANSIT NETWORK TELEMETRY</span>
+              <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+              <span className="font-mono text-[11px] font-bold text-[#172033]">TRANSIT NETWORK TELEMETRY</span>
             </div>
             <button
               onClick={() => setShowLegend(false)}
-              className="text-[10px] text-slate-500 hover:text-slate-300 font-mono"
+              className="text-[10px] text-[#7A8797] hover:text-[#172033] font-mono cursor-pointer"
             >
               [Hide]
             </button>
           </div>
 
-          <div className="space-y-1.5 text-[11px] font-mono text-slate-300">
-            <div className="flex items-center justify-between">
-              <span className="flex items-center gap-1.5 text-slate-400">
-                <AlertTriangle className="w-3 h-3 text-rose-400" />
-                <span>Critical Hazards:</span>
-              </span>
-              <span className="text-rose-400 font-bold">{highHazards.length} Detected</span>
+          {/* Priority Marker Legend */}
+          <div className="space-y-1 pb-2 mb-2 border-b border-[#D5DEE8] text-[10px] font-mono">
+            <div className="text-[9px] uppercase tracking-wider font-bold text-[#7A8797]">Problem Priority</div>
+            <div className="flex items-center gap-1.5 text-rose-600 font-semibold">
+              <span className="w-2 h-2 rounded-full bg-rose-500 shadow-xs"></span>
+              <span>● RED — Critical / High</span>
             </div>
-
-            <div className="flex items-center justify-between">
-              <span className="flex items-center gap-1.5 text-slate-400">
-                <Activity className="w-3 h-3 text-amber-400" />
-                <span>Medium Hazards:</span>
-              </span>
-              <span className="text-amber-400 font-bold">{mediumHazards.length} Detected</span>
+            <div className="flex items-center gap-1.5 text-amber-600 font-semibold">
+              <span className="w-2 h-2 rounded-full bg-amber-500 shadow-xs"></span>
+              <span>● ORANGE — Medium / Pending</span>
             </div>
-
-            <div className="flex items-center justify-between">
-              <span className="flex items-center gap-1.5 text-slate-400">
-                <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                <span>Transit Fleet Units:</span>
-              </span>
-              <span className="text-cyan-400 font-bold">{busFleet.length} Active Units</span>
+            <div className="flex items-center gap-1.5 text-emerald-600 font-semibold">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-xs"></span>
+              <span>● GREEN — Solved / Repaired</span>
             </div>
           </div>
 
-          <div className="mt-2 pt-1.5 border-t border-slate-800 text-[10px] text-slate-500 font-mono flex items-center justify-between">
+          <div className="space-y-1.5 text-[11px] font-mono text-[#526071]">
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-1.5 text-[#526071]">
+                <AlertTriangle className="w-3 h-3 text-rose-500" />
+                <span>Critical Hazards:</span>
+              </span>
+              <span className="text-rose-600 font-bold">{highHazards.length} Detected</span>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-1.5 text-[#526071]">
+                <Activity className="w-3 h-3 text-amber-500" />
+                <span>Medium Hazards:</span>
+              </span>
+              <span className="text-amber-600 font-bold">{mediumHazards.length} Detected</span>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-1.5 text-[#526071]">
+                <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                <span>Transit Fleet Units:</span>
+              </span>
+              <span className="text-cyan-700 font-bold">{busFleet.length} Active Units</span>
+            </div>
+          </div>
+
+          <div className="mt-2 pt-1.5 border-t border-[#D5DEE8] text-[10px] text-[#7A8797] font-mono flex items-center justify-between">
             <span>AI Visualization Layer</span>
-            <span className="text-cyan-400/80 font-semibold">{issues.length} Total Telemetry Records</span>
+            <span className="text-cyan-700 font-semibold">{issues.length} Total Telemetry Records</span>
           </div>
         </div>
       )}
@@ -183,7 +212,7 @@ export const CityMap: React.FC<CityMapProps> = ({
       {!showLegend && (
         <button
           onClick={() => setShowLegend(true)}
-          className="absolute bottom-3 left-3 z-10 bg-[#090e1a]/90 px-2 py-1 rounded text-xs font-mono text-cyan-300 border border-cyan-900 pointer-events-auto"
+          className="absolute bottom-3 left-3 z-10 bg-white/95 px-2 py-1 rounded text-xs font-mono text-cyan-700 border border-[#D5DEE8] shadow-md pointer-events-auto cursor-pointer"
         >
           [Show Telemetry]
         </button>

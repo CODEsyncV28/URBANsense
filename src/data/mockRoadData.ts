@@ -178,8 +178,8 @@ export const initialRoadIssues: RoadIssue[] = [
     locationName: 'Kasak Circle to Civil Hospital Road, Bharuch',
     lat: 21.7010,
     lng: 72.9910,
-    severity: 'HIGH',
-    priority: 'High',
+    severity: 'MEDIUM',
+    priority: 'Medium',
     confidence: 91.2,
     busId: 'BUS-12',
     busRoute: 'Route 9A (Zadeshwar - Kasak - Bholav)',
@@ -260,9 +260,10 @@ export const initialRoadIssues: RoadIssue[] = [
     busId: 'BUS-07',
     busRoute: 'Route 4B (Station - GIDC Industrial)',
     timestamp: '2026-09-16 09:21:04 IST',
-    status: 'Pending',
-    verification: 'Pending Verification',
+    status: 'Solved',
+    verification: 'Verified',
     source: 'Uploaded Image / Video',
+    resolvedAt: '2026-09-16 09:30:00 IST',
     evidenceImage: generateEvidenceDataUrl('road_damage', 'Alligator Cracks', 'BUS-07', '09:21:04 IST'),
     boundingBoxes: [
       {

@@ -10,7 +10,6 @@ import { LayerManagerPanel } from './components/LayerManagerPanel';
 import { UploadInterfaceModal } from './components/UploadInterfaceModal';
 import { AssignProblemModal } from './components/AssignProblemModal';
 import { SolveProblemModal } from './components/SolveProblemModal';
-import { TransitNetworkBackground } from './components/TransitNetworkBackground';
 import { 
   RoadIssue, 
   BusFleet, 
@@ -708,11 +707,8 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#060a13] text-slate-100 font-sans antialiased relative">
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#F4F7FA] text-[#172033] font-sans antialiased relative">
       
-      {/* 0. Decorative Animated Transit Network Background Layer (Faint Watermark, Pointer-Events None) */}
-      <TransitNetworkBackground />
-
       {/* 1. Header Bar with BEL & System Status */}
       <Header
         activeLayer={activeLayer}
@@ -800,18 +796,18 @@ export default function App() {
             if (found) setSelectedIssue(found);
             setLiveToast(null);
           }}
-          className="fixed bottom-16 right-6 z-[2500] max-w-md p-3 rounded-lg bg-[#0c1322]/95 border border-cyan-500/80 shadow-[0_0_25px_rgba(6,182,212,0.4)] text-xs font-mono flex items-center gap-3 cursor-pointer animate-bounce hover:animate-none"
+          className="fixed bottom-16 right-6 z-[2500] max-w-md p-3 rounded-lg bg-white/95 border border-cyan-500/80 shadow-[0_4px_25px_rgba(0,175,198,0.25)] text-xs font-mono flex items-center gap-3 cursor-pointer animate-bounce hover:animate-none"
         >
           <div className="w-3 h-3 rounded-full bg-rose-500 animate-ping shrink-0"></div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between text-[11px] text-cyan-300 font-bold mb-0.5">
+            <div className="flex items-center justify-between text-[11px] text-cyan-600 font-bold mb-0.5">
               <span>🚨 NEW DETECTION: {liveToast.id}</span>
-              <span className="text-amber-400">{liveToast.busId}</span>
+              <span className="text-amber-600">{liveToast.busId}</span>
             </div>
-            <p className="text-slate-100 font-sans font-semibold text-xs truncate">
+            <p className="text-[#172033] font-sans font-semibold text-xs truncate">
               {liveToast.title}
             </p>
-            <span className="text-[10px] text-cyan-400 underline">
+            <span className="text-[10px] text-cyan-600 underline">
               Click to view camera evidence &amp; dispatch
             </span>
           </div>
@@ -820,7 +816,7 @@ export default function App() {
               e.stopPropagation();
               setLiveToast(null);
             }}
-            className="text-slate-500 hover:text-slate-300 p-1"
+            className="text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>

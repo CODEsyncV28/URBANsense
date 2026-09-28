@@ -789,27 +789,27 @@ export const UploadInterfaceModal: React.FC<UploadInterfaceModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[2200] flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-md select-none overflow-y-auto">
+    <div className="fixed inset-0 z-[2200] flex items-center justify-center p-3 sm:p-6 bg-slate-900/40 backdrop-blur-xs select-none overflow-y-auto">
       
       {/* Modal Card */}
-      <div className="relative w-full max-w-4xl bg-[#090e1a] border border-cyan-700/80 rounded-xl shadow-[0_0_50px_rgba(6,182,212,0.25)] text-slate-100 flex flex-col max-h-[94vh] overflow-hidden my-auto">
+      <div className="relative w-full max-w-4xl bg-white border border-[#D5DEE8] rounded-xl shadow-2xl text-[#172033] flex flex-col max-h-[94vh] overflow-hidden my-auto">
         
         {/* Header: Title + Pipeline Concept */}
-        <div className="px-5 py-3.5 bg-[#0c1322] border-b border-slate-800 flex items-center justify-between">
+        <div className="px-5 py-3.5 bg-[#F9FBFC] border-b border-[#D5DEE8] flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-lg bg-cyan-950 border border-cyan-500/50 text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+            <div className="p-2.5 rounded-lg bg-cyan-50 border border-cyan-200 text-cyan-600 shadow-xs">
               <Upload className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="font-mono text-sm sm:text-base font-bold text-slate-100 uppercase tracking-wide">
+                <h2 className="font-mono text-sm sm:text-base font-bold text-[#172033] uppercase tracking-wide">
                   Road Footage Ingestion &amp; AI Detection Engine
                 </h2>
-                <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-950 text-cyan-300 border border-cyan-700">
+                <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-50 text-cyan-700 border border-cyan-200">
                   MVP Model: Uploaded Footage
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 font-mono">
+              <p className="text-[11px] text-[#526071] font-mono">
                 Processes pre-recorded dashcam video or photos • Maps video timestamps to Bharuch GPS coordinates
               </p>
             </div>
@@ -817,17 +817,17 @@ export const UploadInterfaceModal: React.FC<UploadInterfaceModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700 transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg bg-white hover:bg-slate-50 text-[#526071] hover:text-[#172033] border border-[#D5DEE8] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* 6-Stage Pipeline Graphic Banner */}
-        <div className="px-5 py-2.5 bg-[#060a12] border-b border-slate-800/80 overflow-x-auto scrollbar-none">
-          <div className="flex items-center justify-between min-w-[700px] text-[10px] font-mono text-slate-400 gap-1">
-            <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-slate-900 border border-slate-800 text-cyan-300">
-              <Upload className="w-3.5 h-3.5 text-cyan-400" />
+        <div className="px-5 py-2.5 bg-[#EEF2F6] border-b border-[#D5DEE8] overflow-x-auto scrollbar-none">
+          <div className="flex items-center justify-between min-w-[700px] text-[10px] font-mono text-[#526071] gap-1">
+            <div className="flex items-center gap-1.5 px-2 py-1 rounded bg-white border border-[#D5DEE8] text-cyan-700 font-semibold">
+              <Upload className="w-3.5 h-3.5 text-cyan-600" />
               <span>1. Upload Media</span>
             </div>
             <ArrowRight className="w-3 h-3 text-slate-600 shrink-0" />

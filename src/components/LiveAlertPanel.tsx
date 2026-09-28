@@ -84,29 +84,29 @@ export const LiveAlertPanel: React.FC<LiveAlertPanelProps> = ({
 
   const getSeverityBadgeClass = (severity: Severity, isResolved: boolean) => {
     if (isResolved) {
-      return 'bg-emerald-950/90 text-emerald-300 border-emerald-600/50 shadow-[0_0_8px_rgba(16,185,129,0.3)]';
+      return 'bg-emerald-50 text-emerald-700 border-emerald-300 shadow-xs';
     }
     switch (severity) {
       case 'HIGH':
-        return 'bg-rose-950/90 text-rose-300 border-rose-600/50 shadow-[0_0_8px_rgba(244,63,94,0.3)] animate-pulse';
+        return 'bg-rose-50 text-rose-700 border-rose-300 shadow-xs animate-pulse';
       case 'MEDIUM':
-        return 'bg-amber-950/90 text-amber-300 border-amber-600/50 shadow-[0_0_8px_rgba(245,158,11,0.3)]';
+        return 'bg-amber-50 text-amber-700 border-amber-300 shadow-xs';
       case 'LOW':
-        return 'bg-emerald-950/90 text-emerald-300 border-emerald-600/50';
+        return 'bg-emerald-50 text-emerald-700 border-emerald-300';
     }
   };
 
   return (
-    <aside className="w-full lg:w-96 xl:w-[420px] bg-[#090d16]/85 backdrop-blur-md border-l border-slate-800 flex flex-col h-full overflow-hidden select-none shrink-0 z-20">
+    <aside className="w-full lg:w-96 xl:w-[420px] bg-white/95 backdrop-blur-md border-l border-[#D5DEE8] flex flex-col h-full overflow-hidden select-none shrink-0 z-20 shadow-xs">
       
       {/* Top Header of Alert Panel */}
-      <div className="p-3 border-b border-slate-800 bg-[#0c121e]/85">
+      <div className="p-3 border-b border-[#D5DEE8] bg-[#F9FBFC]">
         <div className="flex items-center justify-between gap-2 mb-2">
           <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></div>
-            <h2 className="font-mono font-bold text-sm text-slate-100 tracking-wider uppercase flex items-center gap-2">
+            <div className="w-2.5 h-2.5 rounded-full bg-cyan-500 animate-pulse"></div>
+            <h2 className="font-mono font-bold text-sm text-[#172033] tracking-wider uppercase flex items-center gap-2">
               <span>Detection Feed</span>
-              <span className="px-1.5 py-0.2 rounded text-[11px] font-mono bg-cyan-950 text-cyan-300 border border-cyan-800">
+              <span className="px-1.5 py-0.2 rounded text-[11px] font-mono bg-cyan-50 text-cyan-700 border border-cyan-200">
                 {filteredIssues.length}
               </span>
             </h2>
@@ -116,7 +116,7 @@ export const LiveAlertPanel: React.FC<LiveAlertPanelProps> = ({
             <button
               id="btn-upload-footage-alert-panel"
               onClick={onOpenUploadModal}
-              className="flex items-center gap-1 px-2 py-1 rounded text-xs font-mono font-semibold bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/50 transition-all cursor-pointer shadow-sm active:scale-95"
+              className="flex items-center gap-1 px-2 py-1 rounded text-xs font-mono font-semibold bg-cyan-50 hover:bg-cyan-100 text-cyan-700 border border-cyan-300 transition-all cursor-pointer shadow-xs active:scale-95"
               title="Upload road footage (.mp4, .jpg) to run detection"
             >
               <span>📤 Upload Media</span>
@@ -124,29 +124,29 @@ export const LiveAlertPanel: React.FC<LiveAlertPanelProps> = ({
             <button
               id="btn-quick-simulate-feed"
               onClick={onOpenSimulateModal}
-              className="flex items-center gap-1 px-1.5 py-1 rounded text-xs font-mono bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all cursor-pointer"
+              className="flex items-center gap-1 px-1.5 py-1 rounded text-xs font-mono bg-white hover:bg-slate-50 text-[#172033] border border-[#D5DEE8] transition-all cursor-pointer shadow-xs"
               title="Simulate media event injection"
             >
-              <Sparkles className="w-3 h-3 text-amber-400" />
+              <Sparkles className="w-3 h-3 text-amber-500" />
             </button>
           </div>
         </div>
 
         {/* Framing notice */}
-        <p className="text-[10px] font-mono text-slate-400 mb-2">
+        <p className="text-[10px] font-mono text-[#7A8797] mb-2">
           AI detects defects from pre-recorded footage • Predefined GPS synced
         </p>
 
         {/* Search Bar */}
         <div className="relative mb-2">
-          <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+          <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-[#7A8797]" />
           <input
             id="input-alert-search"
             type="text"
             placeholder="Search location, Bus ID, or Hazard ID..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 rounded bg-slate-950/90 border border-slate-800 text-xs font-mono text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors"
+            className="w-full pl-8 pr-3 py-1.5 rounded bg-white border border-[#D5DEE8] text-xs font-mono text-[#172033] placeholder-[#7A8797] focus:outline-none focus:border-[#00AFC6] transition-colors shadow-2xs"
           />
         </div>
 
@@ -156,8 +156,8 @@ export const LiveAlertPanel: React.FC<LiveAlertPanelProps> = ({
             onClick={() => setFilterType('ALL')}
             className={`px-2 py-0.5 rounded whitespace-nowrap transition-colors cursor-pointer ${
               filterType === 'ALL'
-                ? 'bg-cyan-600 text-slate-950 font-bold'
-                : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
+                ? 'bg-[#00AFC6] text-white font-bold shadow-2xs'
+                : 'bg-white text-[#526071] hover:text-[#172033] border border-[#D5DEE8]'
             }`}
           >
             All Types
@@ -166,8 +166,8 @@ export const LiveAlertPanel: React.FC<LiveAlertPanelProps> = ({
             onClick={() => setFilterType('pothole')}
             className={`px-2 py-0.5 rounded whitespace-nowrap transition-colors cursor-pointer flex items-center gap-1 ${
               filterType === 'pothole'
-                ? 'bg-cyan-600 text-slate-950 font-bold'
-                : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
+                ? 'bg-[#00AFC6] text-white font-bold shadow-2xs'
+                : 'bg-white text-[#526071] hover:text-[#172033] border border-[#D5DEE8]'
             }`}
           >
             <span>🕳️</span>
@@ -177,8 +177,8 @@ export const LiveAlertPanel: React.FC<LiveAlertPanelProps> = ({
             onClick={() => setFilterType('waterlogging')}
             className={`px-2 py-0.5 rounded whitespace-nowrap transition-colors cursor-pointer flex items-center gap-1 ${
               filterType === 'waterlogging'
-                ? 'bg-cyan-600 text-slate-950 font-bold'
-                : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
+                ? 'bg-[#00AFC6] text-white font-bold shadow-2xs'
+                : 'bg-white text-[#526071] hover:text-[#172033] border border-[#D5DEE8]'
             }`}
           >
             <span>🌊</span>
@@ -188,8 +188,8 @@ export const LiveAlertPanel: React.FC<LiveAlertPanelProps> = ({
             onClick={() => setFilterType('road_damage')}
             className={`px-2 py-0.5 rounded whitespace-nowrap transition-colors cursor-pointer flex items-center gap-1 ${
               filterType === 'road_damage'
-                ? 'bg-cyan-600 text-slate-950 font-bold'
-                : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
+                ? 'bg-[#00AFC6] text-white font-bold shadow-2xs'
+                : 'bg-white text-[#526071] hover:text-[#172033] border border-[#D5DEE8]'
             }`}
           >
             <span>⚡</span>
@@ -199,8 +199,8 @@ export const LiveAlertPanel: React.FC<LiveAlertPanelProps> = ({
             onClick={() => setFilterType('accident')}
             className={`px-2 py-0.5 rounded whitespace-nowrap transition-colors cursor-pointer flex items-center gap-1 ${
               filterType === 'accident'
-                ? 'bg-cyan-600 text-slate-950 font-bold'
-                : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
+                ? 'bg-[#00AFC6] text-white font-bold shadow-2xs'
+                : 'bg-white text-[#526071] hover:text-[#172033] border border-[#D5DEE8]'
             }`}
           >
             <span>🚨</span>
@@ -209,26 +209,26 @@ export const LiveAlertPanel: React.FC<LiveAlertPanelProps> = ({
         </div>
 
         {/* Status Filter */}
-        <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 pt-1.5 border-t border-slate-800/80">
-          <span className="text-slate-500">Status filter:</span>
+        <div className="flex items-center justify-between text-[10px] font-mono text-[#526071] pt-1.5 border-t border-[#D5DEE8]">
+          <span className="text-[#7A8797]">Status filter:</span>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setStatusFilter('ALL')}
-              className={`cursor-pointer ${statusFilter === 'ALL' ? 'text-cyan-300 font-bold' : 'hover:text-slate-300'}`}
+              className={`cursor-pointer ${statusFilter === 'ALL' ? 'text-cyan-700 font-bold' : 'hover:text-[#172033]'}`}
             >
               All
             </button>
             <span>•</span>
             <button
               onClick={() => setStatusFilter('ACTIVE')}
-              className={`cursor-pointer ${statusFilter === 'ACTIVE' ? 'text-amber-400 font-bold' : 'hover:text-slate-300'}`}
+              className={`cursor-pointer ${statusFilter === 'ACTIVE' ? 'text-amber-600 font-bold' : 'hover:text-[#172033]'}`}
             >
               Active Only
             </button>
             <span>•</span>
             <button
               onClick={() => setStatusFilter('RESOLVED')}
-              className={`cursor-pointer ${statusFilter === 'RESOLVED' ? 'text-emerald-400 font-bold' : 'hover:text-slate-300'}`}
+              className={`cursor-pointer ${statusFilter === 'RESOLVED' ? 'text-emerald-600 font-bold' : 'hover:text-[#172033]'}`}
             >
               Resolved
             </button>
@@ -240,8 +240,8 @@ export const LiveAlertPanel: React.FC<LiveAlertPanelProps> = ({
       {/* Feed List Cards */}
       <div className="flex-1 overflow-y-auto p-3 space-y-2.5">
         {filteredIssues.length === 0 ? (
-          <div className="p-8 text-center text-slate-500 font-mono text-xs">
-            <AlertCircle className="w-8 h-8 mx-auto mb-2 text-slate-600" />
+          <div className="p-8 text-center text-[#7A8797] font-mono text-xs">
+            <AlertCircle className="w-8 h-8 mx-auto mb-2 text-slate-400" />
             <p>No detection alerts matching filter criteria.</p>
           </div>
         ) : (
@@ -258,8 +258,8 @@ export const LiveAlertPanel: React.FC<LiveAlertPanelProps> = ({
                 onClick={() => onSelectIssue(issue)}
                 className={`p-3 rounded-lg border transition-all cursor-pointer relative group ${
                   isSelected
-                    ? 'bg-[#101827] border-cyan-500/80 shadow-[0_0_15px_rgba(6,182,212,0.2)] ring-1 ring-cyan-500/50'
-                    : 'bg-[#0c121e]/90 hover:bg-[#111928] border-slate-800/90 hover:border-slate-700'
+                    ? 'bg-cyan-50/70 border-[#00AFC6] shadow-sm ring-1 ring-[#00AFC6]/50'
+                    : 'bg-white hover:bg-[#F9FBFC] border-[#D5DEE8] hover:border-slate-300 shadow-xs'
                 }`}
               >
                 {/* Top Row: Icon + ID + Severity + Confidence */}
@@ -268,22 +268,22 @@ export const LiveAlertPanel: React.FC<LiveAlertPanelProps> = ({
                     <span className="text-lg">{getIssueIcon(issue.type)}</span>
                     <div>
                       <div className="flex items-center gap-1.5">
-                        <span className="font-mono text-xs font-bold text-cyan-400">
+                        <span className="font-mono text-xs font-bold text-cyan-700">
                           {issue.id}
                         </span>
                         {isVerified && (
-                          <span className="text-[10px] font-mono px-1 py-0.2 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center gap-0.5">
+                          <span className="text-[10px] font-mono px-1 py-0.2 rounded bg-emerald-50 text-emerald-700 border border-emerald-300 flex items-center gap-0.5">
                             <ShieldCheck className="w-2.5 h-2.5" />
                             <span>VERIFIED</span>
                           </span>
                         )}
                         {isRejected && (
-                          <span className="text-[10px] font-mono px-1 py-0.2 rounded bg-rose-950 text-rose-400 border border-rose-800 flex items-center gap-0.5">
+                          <span className="text-[10px] font-mono px-1 py-0.2 rounded bg-rose-50 text-rose-700 border border-rose-300 flex items-center gap-0.5">
                             <span>REJECTED</span>
                           </span>
                         )}
                       </div>
-                      <span className="text-[10px] font-mono text-slate-400 capitalize">
+                      <span className="text-[10px] font-mono text-[#526071] capitalize">
                         {issue.type.replace('_', ' ')}
                       </span>
                     </div>
@@ -299,67 +299,67 @@ export const LiveAlertPanel: React.FC<LiveAlertPanelProps> = ({
                     >
                       {isResolved ? 'RESOLVED' : isRejected ? 'REJECTED' : `${issue.severity}`}
                     </span>
-                    <span className="text-[10px] font-mono text-cyan-300 font-semibold">
+                    <span className="text-[10px] font-mono text-cyan-700 font-semibold">
                       🤖 {issue.confidence}%
                     </span>
                   </div>
                 </div>
 
                 {/* Title & Location */}
-                <h3 className="text-xs font-semibold text-slate-100 line-clamp-1 mb-1">
+                <h3 className="text-xs font-semibold text-[#172033] line-clamp-1 mb-1">
                   {issue.title}
                 </h3>
-                <p className="text-[11px] text-slate-400 flex items-center gap-1 mb-1.5 line-clamp-1">
+                <p className="text-[11px] text-[#526071] flex items-center gap-1 mb-1.5 line-clamp-1">
                   <span>📍</span>
                   <span>{issue.locationName}</span>
                 </p>
 
                 {/* Video Timestamp / Source Media Tag */}
                 <div className="flex items-center gap-1.5 mb-2 text-[10px] font-mono">
-                  <span className="px-1.5 py-0.5 rounded bg-cyan-950/70 border border-cyan-700/60 text-cyan-300">
+                  <span className="px-1.5 py-0.5 rounded bg-cyan-50 border border-cyan-200 text-cyan-700">
                     ⏱️ {issue.videoTimestamp || (issue.sourceMedia ? `at ${issue.sourceMedia.videoTimestamp}` : '00:14 in clip')}
                   </span>
                   {issue.sourceMedia && (
-                    <span className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700 text-slate-400 truncate max-w-[170px]" title={issue.sourceMedia.fileName}>
+                    <span className="px-1.5 py-0.5 rounded bg-[#EEF2F6] border border-[#D5DEE8] text-[#526071] truncate max-w-[170px]" title={issue.sourceMedia.fileName}>
                       📁 {issue.sourceMedia.fileName}
                     </span>
                   )}
                 </div>
 
                 {/* Bus Detection Telemetry & Time Row */}
-                <div className="grid grid-cols-2 gap-1.5 p-1.5 rounded bg-[#070b14] border border-slate-800/80 text-[10px] font-mono mb-2">
-                  <div className="flex items-center gap-1 text-slate-300">
-                    <Bus className="w-3 h-3 text-amber-400 shrink-0" />
-                    <span className="text-slate-400">Bus:</span>
-                    <span className="text-amber-300 font-bold truncate">{issue.busId}</span>
+                <div className="grid grid-cols-2 gap-1.5 p-1.5 rounded bg-[#F4F7FA] border border-[#D5DEE8] text-[10px] font-mono mb-2">
+                  <div className="flex items-center gap-1 text-[#172033]">
+                    <Bus className="w-3 h-3 text-amber-500 shrink-0" />
+                    <span className="text-[#526071]">Bus:</span>
+                    <span className="text-amber-700 font-bold truncate">{issue.busId}</span>
                   </div>
-                  <div className="flex items-center gap-1 text-slate-300 justify-end">
-                    <Clock className="w-3 h-3 text-slate-500 shrink-0" />
-                    <span className="text-slate-400 truncate">{issue.timestamp.split(' ')[1] || issue.timestamp}</span>
+                  <div className="flex items-center gap-1 text-[#526071] justify-end">
+                    <Clock className="w-3 h-3 text-slate-400 shrink-0" />
+                    <span className="text-[#526071] truncate">{issue.timestamp.split(' ')[1] || issue.timestamp}</span>
                   </div>
-                  <div className="text-slate-400 truncate">
-                    Z-Bump: <span className="text-rose-400 font-bold">{issue.telemetry.zVibrationG}G</span>
+                  <div className="text-[#526071] truncate">
+                    Z-Bump: <span className="text-rose-600 font-bold">{issue.telemetry.zVibrationG}G</span>
                   </div>
-                  <div className="text-slate-400 truncate text-right">
-                    Speed: <span className="text-slate-200">{issue.telemetry.speedKmh} km/h</span>
+                  <div className="text-[#526071] truncate text-right">
+                    Speed: <span className="text-[#172033] font-medium">{issue.telemetry.speedKmh} km/h</span>
                   </div>
                 </div>
 
                 {/* Actions Row: [ View Evidence ] + Dispatch Status */}
-                <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-800/60">
+                <div className="flex items-center justify-between gap-2 pt-1 border-t border-[#D5DEE8]">
                   <div className="flex items-center gap-1 text-[10px] font-mono">
-                    <span className="text-slate-500">Status:</span>
+                    <span className="text-[#7A8797]">Status:</span>
                     <span
                       className={`px-1.5 py-0.2 rounded font-semibold ${
                         isResolved
-                          ? 'text-emerald-400 bg-emerald-950/40 border border-emerald-800/40'
+                          ? 'text-emerald-700 bg-emerald-50 border border-emerald-200'
                           : isRejected
-                          ? 'text-rose-400 bg-rose-950/40 border border-rose-800/40'
+                          ? 'text-rose-700 bg-rose-50 border border-rose-200'
                           : issue.status === 'In Progress' || issue.status === 'IN_PROGRESS'
-                          ? 'text-cyan-400 bg-cyan-950/40 border border-cyan-800/40'
+                          ? 'text-cyan-700 bg-cyan-50 border border-cyan-200'
                           : issue.assignedAuthority || issue.status === 'DISPATCHED'
-                          ? 'text-amber-400 bg-amber-950/40 border border-amber-800/40'
-                          : 'text-slate-300 bg-slate-900 border border-slate-700/50'
+                          ? 'text-amber-700 bg-amber-50 border border-amber-200'
+                          : 'text-[#526071] bg-[#EEF2F6] border border-[#D5DEE8]'
                       }`}
                     >
                       {issue.status}
@@ -372,7 +372,7 @@ export const LiveAlertPanel: React.FC<LiveAlertPanelProps> = ({
                       e.stopPropagation();
                       onOpenEvidence(issue);
                     }}
-                    className="flex items-center gap-1 px-2.5 py-1 rounded text-xs font-mono font-bold bg-cyan-600/20 hover:bg-cyan-600 text-cyan-300 hover:text-slate-950 border border-cyan-500/40 hover:border-cyan-400 transition-all cursor-pointer shadow-sm active:scale-95"
+                    className="flex items-center gap-1 px-2.5 py-1 rounded text-xs font-mono font-bold bg-cyan-50 hover:bg-[#00AFC6] text-cyan-700 hover:text-white border border-cyan-300 hover:border-cyan-500 transition-all cursor-pointer shadow-xs active:scale-95"
                   >
                     <Camera className="w-3 h-3" />
                     <span>View Evidence</span>
@@ -386,12 +386,12 @@ export const LiveAlertPanel: React.FC<LiveAlertPanelProps> = ({
       </div>
 
       {/* Alert Feed Footer Summary */}
-      <div className="p-2.5 bg-[#070b14] border-t border-slate-800 text-[10px] font-mono text-slate-400 flex items-center justify-between">
+      <div className="p-2.5 bg-[#F9FBFC] border-t border-[#D5DEE8] text-[10px] font-mono text-[#526071] flex items-center justify-between">
         <span className="flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
           <span>Feed: Pre-Recorded Footage • Timeline GPS Synced</span>
         </span>
-        <span className="text-slate-500">BEL SIH26124</span>
+        <span className="text-[#7A8797]">BEL SIH26124</span>
       </div>
 
     </aside>

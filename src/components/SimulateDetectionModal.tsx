@@ -199,20 +199,20 @@ export const SimulateDetectionModal: React.FC<SimulateDetectionModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[2000] flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md select-none overflow-y-auto">
-      <div className="relative w-full max-w-2xl bg-[#090e1a] border border-cyan-800 rounded-xl shadow-[0_0_40px_rgba(6,182,212,0.2)] text-slate-100 flex flex-col max-h-[92vh] overflow-hidden my-auto">
+    <div className="fixed inset-0 z-[2000] flex items-center justify-center p-3 sm:p-6 bg-slate-900/40 backdrop-blur-xs select-none overflow-y-auto">
+      <div className="relative w-full max-w-2xl bg-white border border-[#D5DEE8] rounded-xl shadow-2xl text-[#172033] flex flex-col max-h-[92vh] overflow-hidden my-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-3.5 bg-[#0c1322] border-b border-slate-800">
+        <div className="flex items-center justify-between px-5 py-3.5 bg-[#F9FBFC] border-b border-[#D5DEE8]">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-cyan-950 border border-cyan-500/40 text-cyan-400">
+            <div className="p-2 rounded-lg bg-cyan-50 border border-cyan-200 text-cyan-600">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="font-mono text-sm font-bold text-slate-100 uppercase tracking-wide">
+              <h2 className="font-mono text-sm font-bold text-[#172033] uppercase tracking-wide">
                 Simulate Bus AI Ingestion Packet
               </h2>
-              <p className="text-[11px] text-slate-400 font-mono">
+              <p className="text-[11px] text-[#526071] font-mono">
                 Tests edge YOLOv8 model frame capture → GPS tagging → FastAPI ingestion pipeline
               </p>
             </div>
@@ -220,18 +220,18 @@ export const SimulateDetectionModal: React.FC<SimulateDetectionModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700 transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg bg-white hover:bg-slate-50 text-[#526071] hover:text-[#172033] border border-[#D5DEE8] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Modal Form Content */}
-        <div className="p-5 space-y-4 overflow-y-auto text-xs font-mono">
+        <div className="p-5 space-y-4 overflow-y-auto text-xs font-mono bg-white">
           
           {/* Defect Type Selection */}
           <div className="space-y-1.5">
-            <label className="text-slate-300 font-bold block text-[11px]">
+            <label className="text-[#172033] font-bold block text-[11px]">
               1. Detected Road Hazard Situation:
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
@@ -247,8 +247,8 @@ export const SimulateDetectionModal: React.FC<SimulateDetectionModalProps> = ({
                   onClick={() => setSelectedType(item.type as IssueType)}
                   className={`p-2 rounded-lg border text-left flex items-center gap-2 transition-all cursor-pointer ${
                     selectedType === item.type
-                      ? 'bg-cyan-500/20 border-cyan-400 text-cyan-200 font-bold shadow-[0_0_10px_rgba(6,182,212,0.3)]'
-                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+                      ? 'bg-cyan-50 border-cyan-400 text-cyan-800 font-bold shadow-xs'
+                      : 'bg-[#EEF2F6] border-[#D5DEE8] text-[#526071] hover:text-[#172033]'
                   }`}
                 >
                   <span className="text-base">{item.icon}</span>
@@ -261,13 +261,13 @@ export const SimulateDetectionModal: React.FC<SimulateDetectionModalProps> = ({
           {/* Bus ID & Incident Location */}
           <div className="space-y-3">
             <div className="space-y-1.5">
-              <label className="text-slate-300 font-bold block text-[11px]">
+              <label className="text-[#172033] font-bold block text-[11px]">
                 2. Reporting Bus (Edge Camera):
               </label>
               <select
                 value={selectedBusId}
                 onChange={(e) => setSelectedBusId(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#D5DEE8] rounded p-2 text-xs text-[#172033] focus:outline-none focus:border-[#00AFC6]"
               >
                 {busFleet.map((b) => (
                   <option key={b.id} value={b.id}>
@@ -277,13 +277,13 @@ export const SimulateDetectionModal: React.FC<SimulateDetectionModalProps> = ({
               </select>
             </div>
 
-            <div className="space-y-2 p-2.5 rounded-lg bg-slate-900/80 border border-slate-800">
+            <div className="space-y-2 p-2.5 rounded-lg bg-[#EEF2F6] border border-[#D5DEE8]">
               <div className="flex items-center justify-between">
-                <label className="text-slate-300 font-bold block text-[11px] flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-cyan-400" />
+                <label className="text-[#172033] font-bold block text-[11px] flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-cyan-600" />
                   <span>3. Location &amp; Coordinates:</span>
                 </label>
-                <span className="text-[10px] font-mono text-cyan-400">Database Source-of-Truth</span>
+                <span className="text-[10px] font-mono text-cyan-700">Database Source-of-Truth</span>
               </div>
               
               <input
@@ -291,37 +291,37 @@ export const SimulateDetectionModal: React.FC<SimulateDetectionModalProps> = ({
                 value={gmapQuickInput}
                 onChange={(e) => handleGmapQuickParse(e.target.value)}
                 placeholder="Quick paste Google Maps URL or 'lat, lng' coordinates..."
-                className="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-mono"
+                className="w-full bg-white border border-[#D5DEE8] rounded p-1.5 text-xs text-[#172033] placeholder-[#7A8797] focus:outline-none focus:border-[#00AFC6] font-mono"
               />
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <div>
-                  <label className="text-[10px] text-slate-400 block font-mono">Latitude</label>
+                  <label className="text-[10px] text-[#526071] block font-mono">Latitude</label>
                   <input
                     type="number"
                     step="any"
                     value={latitude}
                     onChange={(e) => setLatitude(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-xs text-cyan-300 font-mono focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#D5DEE8] rounded p-1.5 text-xs text-cyan-700 font-mono focus:outline-none focus:border-[#00AFC6]"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-slate-400 block font-mono">Longitude</label>
+                  <label className="text-[10px] text-[#526071] block font-mono">Longitude</label>
                   <input
                     type="number"
                     step="any"
                     value={longitude}
                     onChange={(e) => setLongitude(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-xs text-cyan-300 font-mono focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#D5DEE8] rounded p-1.5 text-xs text-cyan-700 font-mono focus:outline-none focus:border-[#00AFC6]"
                   />
                 </div>
                 <div>
-                  <label className="text-[10px] text-slate-400 block font-mono">Address / Corridor</label>
+                  <label className="text-[10px] text-[#526071] block font-mono">Address / Corridor</label>
                   <input
                     type="text"
                     value={locationName}
                     onChange={(e) => setLocationName(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-700 rounded p-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#D5DEE8] rounded p-1.5 text-xs text-[#172033] focus:outline-none focus:border-[#00AFC6]"
                   />
                 </div>
               </div>
@@ -331,7 +331,7 @@ export const SimulateDetectionModal: React.FC<SimulateDetectionModalProps> = ({
           {/* Severity & Confidence Slider */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <label className="text-slate-300 font-bold block text-[11px]">
+              <label className="text-[#172033] font-bold block text-[11px]">
                 4. Hazard Severity Tier:
               </label>
               <div className="grid grid-cols-3 gap-1.5">
@@ -343,11 +343,11 @@ export const SimulateDetectionModal: React.FC<SimulateDetectionModalProps> = ({
                     className={`py-1.5 rounded text-center font-bold border transition-colors cursor-pointer ${
                       severity === sev
                         ? sev === 'HIGH'
-                          ? 'bg-rose-500 text-white border-rose-400 shadow-[0_0_10px_rgba(239,68,68,0.5)]'
+                          ? 'bg-rose-500 text-white border-rose-400 shadow-xs'
                           : sev === 'MEDIUM'
                           ? 'bg-amber-500 text-slate-950 border-amber-400'
                           : 'bg-emerald-500 text-slate-950 border-emerald-400'
-                        : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+                        : 'bg-white border-[#D5DEE8] text-[#526071] hover:text-[#172033]'
                     }`}
                   >
                     {sev}
@@ -358,8 +358,8 @@ export const SimulateDetectionModal: React.FC<SimulateDetectionModalProps> = ({
 
             <div className="space-y-1.5">
               <div className="flex items-center justify-between text-[11px]">
-                <span className="text-slate-300 font-bold">5. AI Confidence:</span>
-                <span className="text-cyan-300 font-bold">{confidence}%</span>
+                <span className="text-[#172033] font-bold">5. AI Confidence:</span>
+                <span className="text-cyan-700 font-bold">{confidence}%</span>
               </div>
               <input
                 type="range"
@@ -368,14 +368,14 @@ export const SimulateDetectionModal: React.FC<SimulateDetectionModalProps> = ({
                 step="0.5"
                 value={confidence}
                 onChange={(e) => setConfidence(Number(e.target.value))}
-                className="w-full accent-cyan-400 cursor-pointer"
+                className="w-full accent-cyan-600 cursor-pointer"
               />
             </div>
           </div>
 
           {/* Optional Custom Title or Image Upload */}
           <div className="space-y-1.5">
-            <label className="text-slate-400 text-[11px] block">
+            <label className="text-[#526071] text-[11px] block">
               Custom Title / Description (Optional):
             </label>
             <input
@@ -383,20 +383,20 @@ export const SimulateDetectionModal: React.FC<SimulateDetectionModalProps> = ({
               value={customTitle}
               onChange={(e) => setCustomTitle(e.target.value)}
               placeholder="e.g., Severe Road Trench Near GIDC Gate 2..."
-              className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+              className="w-full bg-white border border-[#D5DEE8] rounded p-2 text-xs text-[#172033] placeholder-[#7A8797] focus:outline-none focus:border-[#00AFC6]"
             />
           </div>
 
           {/* File Upload Option */}
-          <div className="p-3 rounded-lg bg-slate-950 border border-dashed border-slate-800 flex items-center justify-between">
+          <div className="p-3 rounded-lg bg-[#F9FBFC] border border-dashed border-[#D5DEE8] flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Camera className="w-4 h-4 text-cyan-400" />
+              <Camera className="w-4 h-4 text-cyan-600" />
               <div>
-                <span className="text-slate-300 block text-[11px]">Upload Custom Road Frame (Optional):</span>
-                <span className="text-slate-500 text-[10px]">Auto-generates bounding boxes &amp; camera HUD</span>
+                <span className="text-[#172033] block text-[11px]">Upload Custom Road Frame (Optional):</span>
+                <span className="text-[#7A8797] text-[10px]">Auto-generates bounding boxes &amp; camera HUD</span>
               </div>
             </div>
-            <label className="px-3 py-1.5 rounded bg-slate-900 hover:bg-slate-800 text-cyan-300 border border-cyan-800 text-xs cursor-pointer transition-colors">
+            <label className="px-3 py-1.5 rounded bg-white hover:bg-slate-50 text-cyan-700 border border-[#D5DEE8] text-xs cursor-pointer transition-colors shadow-2xs">
               Browse Image
               <input
                 type="file"
@@ -408,26 +408,26 @@ export const SimulateDetectionModal: React.FC<SimulateDetectionModalProps> = ({
           </div>
 
           {isUploadingCustomImage && (
-            <div className="p-2 rounded bg-cyan-950/50 border border-cyan-500/50 flex items-center gap-2 text-[11px] text-cyan-300 animate-pulse">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+            <div className="p-2 rounded bg-cyan-50 border border-cyan-300 flex items-center gap-2 text-[11px] text-cyan-700 animate-pulse">
+              <span className="w-2 h-2 rounded-full bg-cyan-500 animate-ping"></span>
               <span>Passing exact uploaded image to YOLO model &amp; generating annotations...</span>
             </div>
           )}
 
           {uploadError && (
-            <div className="p-2 rounded bg-rose-950/60 border border-rose-500/60 flex items-center justify-between text-[11px] text-rose-300">
+            <div className="p-2 rounded bg-rose-50 border border-rose-300 flex items-center justify-between text-[11px] text-rose-700">
               <span>Error: {uploadError}</span>
-              <button type="button" onClick={() => setUploadError(null)} className="font-bold underline">Dismiss</button>
+              <button type="button" onClick={() => setUploadError(null)} className="font-bold underline cursor-pointer">Dismiss</button>
             </div>
           )}
 
           {customImageBase64 && (
-            <div className="p-2 rounded bg-cyan-950/30 border border-cyan-800/40 flex items-center justify-between text-[11px]">
-              <span className="text-cyan-300">✓ Custom YOLO-processed image verified &amp; connected</span>
+            <div className="p-2 rounded bg-emerald-50 border border-emerald-300 flex items-center justify-between text-[11px]">
+              <span className="text-emerald-700 font-medium">✓ Custom YOLO-processed image verified &amp; connected</span>
               <button
                 type="button"
                 onClick={() => setCustomImageBase64(null)}
-                className="text-rose-400 hover:text-rose-300 font-bold"
+                className="text-rose-600 hover:text-rose-700 font-bold cursor-pointer"
               >
                 Clear
               </button>
@@ -437,17 +437,17 @@ export const SimulateDetectionModal: React.FC<SimulateDetectionModalProps> = ({
         </div>
 
         {/* Footer Buttons */}
-        <div className="px-5 py-3 bg-[#0c1322] border-t border-slate-800 flex items-center justify-end gap-2">
+        <div className="px-5 py-3 bg-[#F9FBFC] border-t border-[#D5DEE8] flex items-center justify-end gap-2">
           <button
             onClick={onClose}
-            className="px-3 py-1.5 rounded bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 text-xs font-mono transition-colors cursor-pointer"
+            className="px-3 py-1.5 rounded bg-white hover:bg-slate-50 text-[#526071] hover:text-[#172033] border border-[#D5DEE8] text-xs font-mono transition-colors cursor-pointer"
           >
             Cancel
           </button>
           <button
             id="btn-confirm-ingest-packet"
             onClick={handleIngest}
-            className="flex items-center gap-1.5 px-4 py-1.5 rounded bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-slate-950 font-bold text-xs font-mono shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all cursor-pointer active:scale-95"
+            className="flex items-center gap-1.5 px-4 py-1.5 rounded bg-[#00AFC6] hover:bg-[#0098AD] text-white font-bold text-xs font-mono shadow-sm transition-all cursor-pointer active:scale-95"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>Ingest Telemetry Packet &amp; Alert Dashboard</span>

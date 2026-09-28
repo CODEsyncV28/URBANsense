@@ -65,7 +65,7 @@ export const Header: React.FC<HeaderProps> = ({
   const activeBuses = busFleet.filter((b) => b.cameraStatus === 'ACTIVE').length;
 
   return (
-    <header className="bg-[#090d16]/85 backdrop-blur-md border-b border-cyan-950/60 px-4 py-2.5 select-none shrink-0 shadow-lg relative z-30">
+    <header className="bg-white/95 backdrop-blur-md border-b border-[#D5DEE8] px-4 py-2.5 select-none shrink-0 shadow-xs relative z-30">
       {/* Top Bar: Identity & Realtime System Telemetry */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2.5">
         
@@ -73,12 +73,12 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center gap-2.5">
           {/* UrbanSense Icon: Map Pin + Bus Transport + Urban Sensing */}
           <div 
-            className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-cyan-950/80 border border-cyan-500/40 text-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.2)] shrink-0"
+            className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-cyan-50 border border-cyan-500/40 text-cyan-600 shadow-[0_0_12px_rgba(0,175,198,0.15)] shrink-0"
             title="UrbanSense"
             aria-label="UrbanSense Logo"
           >
-            <MapPin className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-cyan-400" />
-            <Bus className="w-2.5 h-2.5 text-cyan-200 absolute -top-0.5" />
+            <MapPin className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-cyan-600" />
+            <Bus className="w-2.5 h-2.5 text-cyan-500 absolute -top-0.5" />
             {/* Sensing pulse */}
             <span className="absolute -top-1 -right-1 flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -86,7 +86,7 @@ export const Header: React.FC<HeaderProps> = ({
             </span>
           </div>
 
-          <h1 className="text-lg sm:text-xl font-extrabold tracking-wider text-slate-50 uppercase font-mono select-none">
+          <h1 className="text-lg sm:text-xl font-extrabold tracking-wider text-[#172033] uppercase font-mono select-none">
             URBANSENSE
           </h1>
         </div>
@@ -94,29 +94,29 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Center: System Status & Telemetry Indicators */}
         <div className="flex items-center flex-wrap gap-2 text-xs font-mono">
           {/* System Online Badge */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-emerald-950/40 border border-emerald-500/40 text-emerald-400">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-emerald-50 border border-emerald-500/30 text-emerald-700">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span className="font-semibold tracking-wide">SYSTEM ACTIVE</span>
           </div>
 
           {/* AI Media Pipeline */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-900/90 border border-slate-800 text-slate-300">
-            <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="text-slate-400">AI Input:</span>
-            <span className="text-cyan-300 font-semibold">Uploaded Video / Images (YOLOv8)</span>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#EEF2F6] border border-[#D5DEE8] text-[#172033]">
+            <Cpu className="w-3.5 h-3.5 text-cyan-600" />
+            <span className="text-[#526071]">AI Input:</span>
+            <span className="text-cyan-700 font-semibold">Uploaded Video / Images (YOLOv8)</span>
           </div>
 
           {/* Active Fleet */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-900/90 border border-slate-800 text-slate-300">
-            <Bus className="w-3.5 h-3.5 text-amber-400" />
-            <span className="text-slate-400">Fleet Media:</span>
-            <span className="text-amber-300 font-semibold">{busFleet.length} Corridors Synced</span>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#EEF2F6] border border-[#D5DEE8] text-[#172033]">
+            <Bus className="w-3.5 h-3.5 text-amber-600" />
+            <span className="text-[#526071]">Fleet Media:</span>
+            <span className="text-amber-700 font-semibold">{busFleet.length} Corridors Synced</span>
           </div>
 
           {/* Time Readout */}
-          <div className="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-950/80 border border-slate-800 text-slate-400">
-            <Clock className="w-3.5 h-3.5 text-slate-500" />
-            <span className="text-slate-300">{currentTime}</span>
+          <div className="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#EEF2F6] border border-[#D5DEE8] text-[#526071]">
+            <Clock className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-[#172033] font-medium">{currentTime}</span>
           </div>
         </div>
 
@@ -126,10 +126,10 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             id="btn-open-upload-interface"
             onClick={onOpenUploadModal}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-bold bg-gradient-to-r from-cyan-600 via-teal-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all cursor-pointer active:scale-95 border border-cyan-400/50"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-bold bg-[#00AFC6] hover:bg-[#0098ad] text-white shadow-sm transition-all cursor-pointer active:scale-95 border border-cyan-400/50"
             title="Upload road footage video/image to run AI detection"
           >
-            <Upload className="w-3.5 h-3.5 text-cyan-200" />
+            <Upload className="w-3.5 h-3.5 text-white" />
             <span>Upload Road Video/Image</span>
           </button>
 
@@ -137,10 +137,10 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             id="btn-bus-camera-stream"
             onClick={() => onOpenBusCameraModal()}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs font-medium bg-slate-900 hover:bg-slate-800 text-cyan-300 border border-cyan-800/60 hover:border-cyan-500/80 transition-all cursor-pointer shadow-sm active:scale-95"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs font-medium bg-white hover:bg-slate-50 text-cyan-700 border border-[#D5DEE8] hover:border-cyan-400 transition-all cursor-pointer shadow-xs active:scale-95"
             title="Inspect pre-recorded dashcam playback & telemetry from fleet buses"
           >
-            <Video className="w-3.5 h-3.5 text-cyan-400" />
+            <Video className="w-3.5 h-3.5 text-cyan-600" />
             <span>Dashcam Playback</span>
           </button>
 
@@ -148,10 +148,10 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             id="btn-simulate-ai-detection"
             onClick={onOpenSimulateModal}
-            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 hover:border-slate-600 transition-all cursor-pointer active:scale-95"
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs font-medium bg-white hover:bg-slate-50 text-[#172033] border border-[#D5DEE8] hover:border-slate-300 transition-all cursor-pointer shadow-xs active:scale-95"
             title="Quick-simulate pre-recorded packet injection"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>Simulate Packet</span>
           </button>
 
@@ -159,32 +159,32 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             id="btn-manual-authority-entry"
             onClick={onOpenManualAddModal}
-            className="hidden xl:flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 hover:border-slate-700 transition-all cursor-pointer active:scale-95"
+            className="hidden xl:flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs font-medium bg-white hover:bg-slate-50 text-[#172033] border border-[#D5DEE8] hover:border-slate-300 transition-all cursor-pointer shadow-xs active:scale-95"
             title="Log manual municipal inspection or road closure"
           >
-            <PlusCircle className="w-3.5 h-3.5 text-slate-400" />
+            <PlusCircle className="w-3.5 h-3.5 text-[#526071]" />
             <span>Manual Entry</span>
           </button>
         </div>
       </div>
 
       {/* Bottom Bar: The 3 Core Functional Layers Bar & Live Anomaly Tally */}
-      <div className="mt-2.5 pt-2 border-t border-slate-800/80 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+      <div className="mt-2.5 pt-2 border-t border-[#D5DEE8] flex flex-col md:flex-row md:items-center md:justify-between gap-2">
         
         {/* Workflow Stages Selector */}
-        <div className="flex items-center gap-1.5 bg-slate-950/80 p-0.5 rounded-lg border border-slate-800">
+        <div className="flex items-center gap-1.5 bg-[#EEF2F6] p-0.5 rounded-lg border border-[#D5DEE8]">
           <button
             id="workflow-tab-ai"
             onClick={() => setActiveLayer('AI_LAYER')}
             className={`flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium transition-all cursor-pointer ${
               activeLayer === 'AI_LAYER'
-                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_8px_rgba(6,182,212,0.2)]'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60 border border-transparent'
+                ? 'bg-white text-cyan-700 border border-cyan-400 shadow-xs font-semibold'
+                : 'text-[#526071] hover:text-[#172033] hover:bg-white/60 border border-transparent'
             }`}
           >
-            <Activity className="w-3.5 h-3.5 text-cyan-400" />
+            <Activity className="w-3.5 h-3.5 text-cyan-600" />
             <span>AI Detection</span>
-            <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-cyan-950 border border-cyan-800 text-cyan-300">
+            <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-cyan-50 border border-cyan-200 text-cyan-700">
               {issues.length}
             </span>
           </button>
@@ -194,13 +194,13 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={() => setActiveLayer('AUTHORITY_LAYER')}
             className={`flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium transition-all cursor-pointer ${
               activeLayer === 'AUTHORITY_LAYER'
-                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-[0_0_8px_rgba(245,158,11,0.2)]'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60 border border-transparent'
+                ? 'bg-white text-amber-700 border border-amber-400 shadow-xs font-semibold'
+                : 'text-[#526071] hover:text-[#172033] hover:bg-white/60 border border-transparent'
             }`}
           >
-            <ShieldAlert className="w-3.5 h-3.5 text-amber-400" />
-            <span>Authority & Verification</span>
-            <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-amber-950 border border-amber-800 text-amber-300">
+            <ShieldAlert className="w-3.5 h-3.5 text-amber-500" />
+            <span>Authority &amp; Verification</span>
+            <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-amber-50 border border-amber-200 text-amber-700">
               {pendingVerificationCount} Pending
             </span>
           </button>
@@ -210,13 +210,13 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={() => setActiveLayer('MAINTENANCE_LAYER')}
             className={`flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium transition-all cursor-pointer ${
               activeLayer === 'MAINTENANCE_LAYER'
-                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-[0_0_8px_rgba(16,185,129,0.2)]'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60 border border-transparent'
+                ? 'bg-white text-emerald-700 border border-emerald-400 shadow-xs font-semibold'
+                : 'text-[#526071] hover:text-[#172033] hover:bg-white/60 border border-transparent'
             }`}
           >
-            <Wrench className="w-3.5 h-3.5 text-emerald-400" />
+            <Wrench className="w-3.5 h-3.5 text-emerald-600" />
             <span>Problem Status Tracking</span>
-            <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-emerald-950 border border-emerald-800 text-emerald-300">
+            <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-emerald-50 border border-emerald-200 text-emerald-700">
               {inProgressCount} Active
             </span>
           </button>
@@ -226,16 +226,16 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center gap-2 sm:gap-3 text-xs font-mono flex-wrap">
           <div className="flex items-center gap-1.5" title="Critical/High Severity Unresolved Problems">
             <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
-            <span className="text-slate-400">Critical / High:</span>
-            <span className="text-rose-400 font-bold">{criticalHighCount}</span>
+            <span className="text-[#526071]">Critical / High:</span>
+            <span className="text-rose-600 font-bold">{criticalHighCount}</span>
           </div>
-          <span className="text-slate-700">|</span>
+          <span className="text-slate-300">|</span>
           <div className="flex items-center gap-1.5" title="Medium Severity Unresolved Problems">
-            <span className="w-2 h-2 rounded-full bg-amber-400"></span>
-            <span className="text-slate-400">Medium:</span>
-            <span className="text-amber-300 font-bold">{mediumCount}</span>
+            <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+            <span className="text-[#526071]">Medium:</span>
+            <span className="text-amber-600 font-bold">{mediumCount}</span>
           </div>
-          <span className="text-slate-700">|</span>
+          <span className="text-slate-300">|</span>
           <div 
             onClick={() => {
               setActiveLayer('MAINTENANCE_LAYER');
@@ -245,10 +245,10 @@ export const Header: React.FC<HeaderProps> = ({
             title="View problems with Pending status"
           >
             <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-            <span className="text-slate-400">Pending:</span>
-            <span className="text-amber-400 font-semibold">{pendingCount}</span>
+            <span className="text-[#526071]">Pending:</span>
+            <span className="text-amber-600 font-semibold">{pendingCount}</span>
           </div>
-          <span className="text-slate-700">|</span>
+          <span className="text-slate-300">|</span>
           <div 
             onClick={() => {
               setActiveLayer('MAINTENANCE_LAYER');
@@ -257,11 +257,11 @@ export const Header: React.FC<HeaderProps> = ({
             className="flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition-opacity" 
             title="View problems currently In Progress"
           >
-            <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
-            <span className="text-slate-400">In Progress:</span>
-            <span className="text-cyan-400 font-semibold">{inProgressCount}</span>
+            <span className="w-2 h-2 rounded-full bg-cyan-500"></span>
+            <span className="text-[#526071]">In Progress:</span>
+            <span className="text-cyan-700 font-semibold">{inProgressCount}</span>
           </div>
-          <span className="text-slate-700">|</span>
+          <span className="text-slate-300">|</span>
           <div 
             onClick={() => {
               setActiveLayer('MAINTENANCE_LAYER');
@@ -271,14 +271,14 @@ export const Header: React.FC<HeaderProps> = ({
             title="View Solved and Repaired Problems"
           >
             <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span className="text-slate-400">Repaired / Solved:</span>
-            <span className="text-emerald-400 font-semibold">{solvedCount}</span>
+            <span className="text-[#526071]">Repaired / Solved:</span>
+            <span className="text-emerald-600 font-semibold">{solvedCount}</span>
           </div>
-          <span className="text-slate-700">|</span>
+          <span className="text-slate-300">|</span>
           <div className="flex items-center gap-1.5" title="False Positives / Closed">
-            <span className="w-2 h-2 rounded-full bg-slate-600"></span>
-            <span className="text-slate-400">False Positives:</span>
-            <span className="text-slate-300 font-semibold">{falsePositiveCount}</span>
+            <span className="w-2 h-2 rounded-full bg-slate-400"></span>
+            <span className="text-[#526071]">False Positives:</span>
+            <span className="text-slate-600 font-semibold">{falsePositiveCount}</span>
           </div>
         </div>
 
