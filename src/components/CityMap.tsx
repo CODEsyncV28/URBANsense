@@ -52,20 +52,20 @@ export const CityMap: React.FC<CityMapProps> = ({
       />
 
       {/* Floating Top Control Bar (Left) - Non-map Telemetry HUD */}
-      <div className="absolute top-3 left-3 z-10 flex flex-wrap items-center gap-2 bg-white/95 backdrop-blur-md p-1.5 px-2.5 rounded-lg border border-[#D5DEE8] shadow-md pointer-events-auto">
-        <div className="flex items-center gap-2 pr-2 border-r border-[#D5DEE8] text-xs font-mono">
+      <div className="absolute top-3 left-3 z-10 flex flex-wrap items-center gap-2 bg-white/95 backdrop-blur-md p-1.5 px-3 rounded-lg border border-[#D5DEE8] shadow-[0_4px_16px_rgba(0,0,0,0.05)] pointer-events-auto">
+        <div className="flex items-center gap-2 pr-2.5 border-r border-[#D5DEE8] text-xs font-mono">
           <Radio className="w-3.5 h-3.5 text-cyan-600 animate-pulse" />
           <span className="text-cyan-700 font-bold tracking-wider">AI SYSTEM VISUALIZATION</span>
         </div>
 
         <div className="flex items-center gap-3 text-[11px] font-mono text-[#526071]">
-          <span className="flex items-center gap-1">
-            <Layers className="w-3 h-3 text-slate-400" />
-            <span>Smart-City Transit Grid</span>
+          <span className="flex items-center gap-1.5">
+            <Layers className="w-3.5 h-3.5 text-cyan-600" />
+            <span className="text-[#172033] font-medium">Smart-City Transit Grid</span>
           </span>
           <span className="text-slate-300">&bull;</span>
-          <span className="flex items-center gap-1 text-emerald-600">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+          <span className="flex items-center gap-1.5 text-emerald-600 font-medium">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
             <span>Telemetry Active</span>
           </span>
         </div>
@@ -73,22 +73,22 @@ export const CityMap: React.FC<CityMapProps> = ({
 
       {/* Floating Filter Badges (Top-Right) */}
       <div className="absolute top-3 right-3 z-10 flex items-center gap-2 pointer-events-auto">
-        <div className="bg-white/95 backdrop-blur-md px-2 py-1.5 rounded-lg border border-[#D5DEE8] shadow-md flex items-center gap-1.5 text-xs font-mono">
+        <div className="bg-white/95 backdrop-blur-md px-2.5 py-1.5 rounded-lg border border-[#D5DEE8] shadow-[0_4px_16px_rgba(0,0,0,0.05)] flex items-center gap-1.5 text-xs font-mono">
           <Filter className="w-3.5 h-3.5 text-slate-400" />
           <span className="text-[#7A8797] text-[11px]">Severity:</span>
           {(['ALL', 'HIGH', 'MEDIUM', 'LOW'] as const).map((sev) => (
             <button
               key={sev}
               onClick={() => setFilterSeverity(sev)}
-              className={`px-1.5 py-0.5 rounded text-[10px] font-bold transition-all cursor-pointer ${
+              className={`px-2 py-0.5 rounded text-[10px] font-bold transition-all cursor-pointer ${
                 filterSeverity === sev
                   ? sev === 'HIGH'
-                    ? 'bg-rose-500 text-white shadow-xs'
+                    ? 'bg-rose-500 text-white shadow-2xs'
                     : sev === 'MEDIUM'
-                    ? 'bg-amber-500 text-slate-950 font-bold'
+                    ? 'bg-amber-500 text-slate-950 font-bold shadow-2xs'
                     : sev === 'LOW'
-                    ? 'bg-emerald-500 text-slate-950 font-bold'
-                    : 'bg-[#00AFC6] text-white font-bold'
+                    ? 'bg-emerald-500 text-slate-950 font-bold shadow-2xs'
+                    : 'bg-[#00AFC6] text-white font-bold shadow-2xs'
                   : 'text-[#526071] hover:text-[#172033]'
               }`}
             >

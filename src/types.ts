@@ -245,3 +245,31 @@ export type ActiveLayer =
   | 'ASSIGN_TRACKING';
 
 export type MapViewMode = 'DEFAULT' | 'SATELLITE' | 'HEATMAP';
+
+export type NotificationType = 'CRITICAL' | 'MEDIUM' | 'PENDING' | 'IN_PROGRESS' | 'SOLVED' | 'SYSTEM';
+
+export interface AppNotification {
+  id: string;
+  type: NotificationType;
+  title: string;
+  description: string;
+  problemId?: string;
+  vehicleId?: string;
+  timestamp: string;
+  severity?: Severity;
+  thumbnail?: string;
+  isRead: boolean;
+  linkIssueId?: string;
+}
+
+export interface ToastAlert {
+  id: string;
+  type: NotificationType;
+  title: string;
+  description: string;
+  problemId?: string;
+  vehicleId?: string;
+  severity?: Severity;
+  thumbnail?: string;
+  timestamp?: string;
+}

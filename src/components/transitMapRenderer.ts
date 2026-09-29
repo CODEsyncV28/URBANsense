@@ -77,7 +77,7 @@ export const renderTransitMap = (
 ) => {
   // Clear viewport with clean, soft background
   ctx.clearRect(0, 0, viewWidth, viewHeight);
-  ctx.fillStyle = '#F8FAFC';
+  ctx.fillStyle = '#F4F7FA';
   ctx.fillRect(0, 0, viewWidth, viewHeight);
 
   ctx.save();
@@ -85,21 +85,53 @@ export const renderTransitMap = (
   ctx.translate(camera.x, camera.y);
   ctx.scale(camera.zoom, camera.zoom);
 
-  // 1. Seamless Vector Grid
-  ctx.strokeStyle = 'rgba(218, 228, 239, 0.45)';
-  ctx.lineWidth = 1;
-  const gridStep = 180;
-  for (let gx = -100; gx <= WORLD_WIDTH + 100; gx += gridStep) {
+  // 1. Dual-Scale Smart City GIS Coordinate Grid
+  // Minor grid lines
+  ctx.strokeStyle = 'rgba(0, 175, 198, 0.035)';
+  ctx.lineWidth = 0.8;
+  const minorStep = 90;
+  for (let gx = -100; gx <= WORLD_WIDTH + 100; gx += minorStep) {
     ctx.beginPath();
     ctx.moveTo(gx, -100);
     ctx.lineTo(gx, WORLD_HEIGHT + 100);
     ctx.stroke();
   }
-  for (let gy = -100; gy <= WORLD_HEIGHT + 100; gy += gridStep) {
+  for (let gy = -100; gy <= WORLD_HEIGHT + 100; gy += minorStep) {
     ctx.beginPath();
     ctx.moveTo(-100, gy);
     ctx.lineTo(WORLD_WIDTH + 100, gy);
     ctx.stroke();
+  }
+
+  // Major grid lines & Intersection Target Crosshairs
+  ctx.strokeStyle = 'rgba(0, 175, 198, 0.08)';
+  ctx.lineWidth = 1.0;
+  const majorStep = 360;
+  for (let gx = 0; gx <= WORLD_WIDTH; gx += majorStep) {
+    ctx.beginPath();
+    ctx.moveTo(gx, -100);
+    ctx.lineTo(gx, WORLD_HEIGHT + 100);
+    ctx.stroke();
+  }
+  for (let gy = 0; gy <= WORLD_HEIGHT; gy += majorStep) {
+    ctx.beginPath();
+    ctx.moveTo(-100, gy);
+    ctx.lineTo(WORLD_WIDTH + 100, gy);
+    ctx.stroke();
+  }
+
+  // Precision coordinate crosses at major intersections
+  ctx.strokeStyle = 'rgba(0, 175, 198, 0.22)';
+  ctx.lineWidth = 1.2;
+  for (let gx = 0; gx <= WORLD_WIDTH; gx += majorStep) {
+    for (let gy = 0; gy <= WORLD_HEIGHT; gy += majorStep) {
+      ctx.beginPath();
+      ctx.moveTo(gx - 5, gy);
+      ctx.lineTo(gx + 5, gy);
+      ctx.moveTo(gx, gy - 5);
+      ctx.lineTo(gx, gy + 5);
+      ctx.stroke();
+    }
   }
 
   // 2. Parks & Greenery Zones

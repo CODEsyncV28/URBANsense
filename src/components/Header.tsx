@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Bus, 
   MapPin,
@@ -13,9 +13,11 @@ import {
   AlertTriangle,
   CheckCircle2,
   Clock,
-  Upload
+  Upload,
+  Bell
 } from 'lucide-react';
-import { ActiveLayer, RoadIssue, BusFleet } from '../types';
+import { ActiveLayer, RoadIssue, BusFleet, AppNotification } from '../types';
+import { NotificationDropdown } from './NotificationDropdown';
 
 interface HeaderProps {
   activeLayer: ActiveLayer;
@@ -29,6 +31,9 @@ interface HeaderProps {
   currentTime: string;
   trackingTab?: 'PENDING' | 'IN_PROGRESS' | 'SOLVED';
   setTrackingTab?: (tab: 'PENDING' | 'IN_PROGRESS' | 'SOLVED') => void;
+  notifications?: AppNotification[];
+  onMarkAllNotificationsAsRead?: () => void;
+  onSelectNotification?: (notif: AppNotification) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -43,7 +48,13 @@ export const Header: React.FC<HeaderProps> = ({
   currentTime,
   trackingTab,
   setTrackingTab,
+  notifications = [],
+  onMarkAllNotificationsAsRead,
+  onSelectNotification,
 }) => {
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
+
   const isSolved = (s: string) => s === 'Solved' || s === 'SOLVED' || s === 'RESOLVED';
   const isFalsePositive = (i: RoadIssue) => i.verification === 'FALSE_POSITIVE' || i.verification === 'False Positive' || i.status === 'Closed' || i.status === 'CLOSED';
   const isPending = (s: string) => s === 'Pending' || s === 'PENDING';
@@ -65,118 +76,163 @@ export const Header: React.FC<HeaderProps> = ({
   const activeBuses = busFleet.filter((b) => b.cameraStatus === 'ACTIVE').length;
 
   return (
-    <header className="bg-white/95 backdrop-blur-md border-b border-[#D5DEE8] px-4 py-2.5 select-none shrink-0 shadow-xs relative z-30">
-      {/* Top Bar: Identity & Realtime System Telemetry */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2.5">
-        
-        {/* Left: Brand Identity */}
-        <div className="flex items-center gap-2.5">
-          {/* UrbanSense Icon: Map Pin + Bus Transport + Urban Sensing */}
-          <div 
-            className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-cyan-50 border border-cyan-500/40 text-cyan-600 shadow-[0_0_12px_rgba(0,175,198,0.15)] shrink-0"
-            title="UrbanSense"
-            aria-label="UrbanSense Logo"
-          >
-            <MapPin className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-cyan-600" />
-            <Bus className="w-2.5 h-2.5 text-cyan-500 absolute -top-0.5" />
-            {/* Sensing pulse */}
-            <span className="absolute -top-1 -right-1 flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
+    <header className="select-none shrink-0 relative z-30">
+      {/* 1. TOP CONTROL BAR */}
+      <div className="bg-white/95 backdrop-blur-md border-b border-[#D5DEE8] px-4 py-2.5 shadow-2xs">
+        <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-3">
+          
+          {/* Left: Branding + Core System Telemetry */}
+          <div className="flex items-center flex-wrap gap-3 sm:gap-4">
+            {/* Brand Identity */}
+            <div className="flex items-center gap-2.5">
+              <div 
+                className="relative flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-br from-cyan-50 to-white border border-cyan-500/40 text-cyan-600 shadow-[0_0_15px_rgba(0,175,198,0.2)] shrink-0"
+                title="UrbanSense"
+                aria-label="UrbanSense Logo"
+              >
+                <MapPin className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-cyan-600" />
+                <Bus className="w-2.5 h-2.5 text-cyan-500 absolute -top-0.5" />
+                <span className="absolute -top-1 -right-1 flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+              </div>
+
+              <div>
+                <h1 className="text-lg sm:text-xl font-extrabold tracking-wider text-[#172033] uppercase font-mono select-none leading-none">
+                  URBANSENSE
+                </h1>
+                <span className="text-[9px] font-mono text-[#7A8797] tracking-widest uppercase block mt-0.5">
+                  Intelligent Transportation Network
+                </span>
+              </div>
+            </div>
+
+            <div className="hidden lg:block w-px h-6 bg-[#D5DEE8]" />
+
+            {/* System Status Indicators beside branding */}
+            <div className="flex items-center flex-wrap gap-2 text-xs font-mono">
+              {/* System Active Badge */}
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50/90 border border-emerald-500/40 text-emerald-700 shadow-2xs">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span className="font-semibold tracking-wide text-[11px]">SYSTEM ACTIVE</span>
+              </div>
+
+              {/* AI Media Pipeline */}
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#F8FAFC] border border-[#D5DEE8] text-[#172033] shadow-2xs">
+                <Cpu className="w-3.5 h-3.5 text-cyan-600" />
+                <span className="text-[#526071] text-[11px]">AI Input:</span>
+                <span className="text-cyan-700 font-semibold text-[11px]">Uploaded Video / Images (YOLOv8)</span>
+              </div>
+
+              {/* Active Fleet */}
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#F8FAFC] border border-[#D5DEE8] text-[#172033] shadow-2xs">
+                <Bus className="w-3.5 h-3.5 text-amber-600" />
+                <span className="text-[#526071] text-[11px]">Fleet Media:</span>
+                <span className="text-amber-700 font-semibold text-[11px]">{busFleet.length} Corridors Synced</span>
+              </div>
+            </div>
           </div>
 
-          <h1 className="text-lg sm:text-xl font-extrabold tracking-wider text-[#172033] uppercase font-mono select-none">
-            URBANSENSE
-          </h1>
-        </div>
+          {/* Right: Time Displayed Clearly + Grouped Actions */}
+          <div className="flex items-center flex-wrap gap-2.5 justify-end">
+            {/* Time Readout */}
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#F8FAFC] border border-[#D5DEE8] text-[#526071] font-mono shadow-2xs">
+              <Clock className="w-3.5 h-3.5 text-cyan-600" />
+              <span className="text-[#172033] font-semibold text-xs">{currentTime}</span>
+            </div>
 
-        {/* Center: System Status & Telemetry Indicators */}
-        <div className="flex items-center flex-wrap gap-2 text-xs font-mono">
-          {/* System Online Badge */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-emerald-50 border border-emerald-500/30 text-emerald-700">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="font-semibold tracking-wide">SYSTEM ACTIVE</span>
+            {/* Notification Bell with Unread Badge & Dropdown */}
+            <div className="relative">
+              <button
+                id="btn-header-notifications"
+                onClick={() => setIsNotificationOpen(!isNotificationOpen)}
+                className={`relative flex items-center justify-center p-2 rounded-md transition-all cursor-pointer shadow-2xs border ${
+                  isNotificationOpen
+                    ? 'bg-cyan-50 border-cyan-400 text-cyan-700 shadow-xs'
+                    : 'bg-white hover:bg-slate-50 border-[#D5DEE8] text-[#172033] hover:border-cyan-300'
+                }`}
+                title={`Notifications (${unreadCount} unread)`}
+                aria-label="View notifications"
+              >
+                <Bell className="w-4 h-4 text-cyan-600" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-rose-500 text-white text-[9px] font-mono font-bold shadow-xs">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-60"></span>
+                    <span className="relative">{unreadCount > 9 ? '9+' : unreadCount}</span>
+                  </span>
+                )}
+              </button>
+
+              {/* Notification Popover Dropdown */}
+              <NotificationDropdown
+                notifications={notifications}
+                isOpen={isNotificationOpen}
+                onClose={() => setIsNotificationOpen(false)}
+                onMarkAllAsRead={() => onMarkAllNotificationsAsRead?.()}
+                onSelectNotification={(notif) => {
+                  onSelectNotification?.(notif);
+                  setIsNotificationOpen(false);
+                }}
+              />
+            </div>
+
+            {/* PRIMARY: Upload Road Video/Image Button */}
+            <button
+              id="btn-open-upload-interface"
+              onClick={onOpenUploadModal}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-bold bg-gradient-to-r from-[#00AFC6] via-[#00A2B8] to-[#0891B2] hover:from-[#009cb1] hover:to-[#0284c7] text-white shadow-[0_2px_12px_rgba(0,175,198,0.28)] transition-all cursor-pointer active:scale-95 border border-cyan-300/40"
+              title="Upload road footage video/image to run AI detection"
+            >
+              <Upload className="w-3.5 h-3.5 text-white" />
+              <span>Upload Road Video/Image</span>
+            </button>
+
+            {/* Recorded Footage HUD Playback */}
+            <button
+              id="btn-bus-camera-stream"
+              onClick={() => onOpenBusCameraModal()}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium bg-white hover:bg-slate-50 text-cyan-700 border border-[#D5DEE8] hover:border-cyan-400 transition-all cursor-pointer shadow-2xs active:scale-95"
+              title="Inspect pre-recorded dashcam playback & telemetry from fleet buses"
+            >
+              <Video className="w-3.5 h-3.5 text-cyan-600" />
+              <span>Dashcam Playback</span>
+            </button>
+
+            {/* Simulate New Detection Event */}
+            <button
+              id="btn-simulate-ai-detection"
+              onClick={onOpenSimulateModal}
+              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium bg-white hover:bg-slate-50 text-[#172033] border border-[#D5DEE8] hover:border-slate-300 transition-all cursor-pointer shadow-2xs active:scale-95"
+              title="Quick-simulate pre-recorded packet injection"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              <span>Simulate Packet</span>
+            </button>
+
+            {/* Add Manual Issue (Authority Layer) */}
+            <button
+              id="btn-manual-authority-entry"
+              onClick={onOpenManualAddModal}
+              className="hidden 2xl:flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium bg-white hover:bg-slate-50 text-[#172033] border border-[#D5DEE8] hover:border-slate-300 transition-all cursor-pointer shadow-2xs active:scale-95"
+              title="Log manual municipal inspection or road closure"
+            >
+              <PlusCircle className="w-3.5 h-3.5 text-[#526071]" />
+              <span>Manual Entry</span>
+            </button>
           </div>
-
-          {/* AI Media Pipeline */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#EEF2F6] border border-[#D5DEE8] text-[#172033]">
-            <Cpu className="w-3.5 h-3.5 text-cyan-600" />
-            <span className="text-[#526071]">AI Input:</span>
-            <span className="text-cyan-700 font-semibold">Uploaded Video / Images (YOLOv8)</span>
-          </div>
-
-          {/* Active Fleet */}
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#EEF2F6] border border-[#D5DEE8] text-[#172033]">
-            <Bus className="w-3.5 h-3.5 text-amber-600" />
-            <span className="text-[#526071]">Fleet Media:</span>
-            <span className="text-amber-700 font-semibold">{busFleet.length} Corridors Synced</span>
-          </div>
-
-          {/* Time Readout */}
-          <div className="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#EEF2F6] border border-[#D5DEE8] text-[#526071]">
-            <Clock className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-[#172033] font-medium">{currentTime}</span>
-          </div>
-        </div>
-
-        {/* Right: Quick Command Actions */}
-        <div className="flex items-center gap-2">
-          {/* PRIMARY: Upload Road Video/Image Button */}
-          <button
-            id="btn-open-upload-interface"
-            onClick={onOpenUploadModal}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-bold bg-[#00AFC6] hover:bg-[#0098ad] text-white shadow-sm transition-all cursor-pointer active:scale-95 border border-cyan-400/50"
-            title="Upload road footage video/image to run AI detection"
-          >
-            <Upload className="w-3.5 h-3.5 text-white" />
-            <span>Upload Road Video/Image</span>
-          </button>
-
-          {/* Recorded Footage HUD Playback */}
-          <button
-            id="btn-bus-camera-stream"
-            onClick={() => onOpenBusCameraModal()}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs font-medium bg-white hover:bg-slate-50 text-cyan-700 border border-[#D5DEE8] hover:border-cyan-400 transition-all cursor-pointer shadow-xs active:scale-95"
-            title="Inspect pre-recorded dashcam playback & telemetry from fleet buses"
-          >
-            <Video className="w-3.5 h-3.5 text-cyan-600" />
-            <span>Dashcam Playback</span>
-          </button>
-
-          {/* Simulate New Detection Event */}
-          <button
-            id="btn-simulate-ai-detection"
-            onClick={onOpenSimulateModal}
-            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs font-medium bg-white hover:bg-slate-50 text-[#172033] border border-[#D5DEE8] hover:border-slate-300 transition-all cursor-pointer shadow-xs active:scale-95"
-            title="Quick-simulate pre-recorded packet injection"
-          >
-            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-            <span>Simulate Packet</span>
-          </button>
-
-          {/* Add Manual Issue (Authority Layer) */}
-          <button
-            id="btn-manual-authority-entry"
-            onClick={onOpenManualAddModal}
-            className="hidden xl:flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs font-medium bg-white hover:bg-slate-50 text-[#172033] border border-[#D5DEE8] hover:border-slate-300 transition-all cursor-pointer shadow-xs active:scale-95"
-            title="Log manual municipal inspection or road closure"
-          >
-            <PlusCircle className="w-3.5 h-3.5 text-[#526071]" />
-            <span>Manual Entry</span>
-          </button>
         </div>
       </div>
 
-      {/* Bottom Bar: The 3 Core Functional Layers Bar & Live Anomaly Tally */}
-      <div className="mt-2.5 pt-2 border-t border-[#D5DEE8] flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+      {/* 2. STATUS NAVIGATION SUB-BAR (Clearly separated from header) */}
+      <div className="bg-[#F8FAFC]/95 backdrop-blur-md border-b border-[#D5DEE8] px-4 py-1.5 flex flex-col md:flex-row md:items-center md:justify-between gap-2 shadow-2xs">
         
-        {/* Workflow Stages Selector */}
+        {/* Left: Workflow Stages Selector */}
         <div className="flex items-center gap-1.5 bg-[#EEF2F6] p-0.5 rounded-lg border border-[#D5DEE8]">
           <button
             id="workflow-tab-ai"
             onClick={() => setActiveLayer('AI_LAYER')}
-            className={`flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-all cursor-pointer ${
               activeLayer === 'AI_LAYER'
                 ? 'bg-white text-cyan-700 border border-cyan-400 shadow-xs font-semibold'
                 : 'text-[#526071] hover:text-[#172033] hover:bg-white/60 border border-transparent'
@@ -184,7 +240,7 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <Activity className="w-3.5 h-3.5 text-cyan-600" />
             <span>AI Detection</span>
-            <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-cyan-50 border border-cyan-200 text-cyan-700">
+            <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-cyan-50 border border-cyan-200 text-cyan-700 font-bold">
               {issues.length}
             </span>
           </button>
@@ -192,7 +248,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             id="workflow-tab-authority"
             onClick={() => setActiveLayer('AUTHORITY_LAYER')}
-            className={`flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-all cursor-pointer ${
               activeLayer === 'AUTHORITY_LAYER'
                 ? 'bg-white text-amber-700 border border-amber-400 shadow-xs font-semibold'
                 : 'text-[#526071] hover:text-[#172033] hover:bg-white/60 border border-transparent'
@@ -200,7 +256,7 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <ShieldAlert className="w-3.5 h-3.5 text-amber-500" />
             <span>Authority &amp; Verification</span>
-            <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-amber-50 border border-amber-200 text-amber-700">
+            <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-amber-50 border border-amber-200 text-amber-700 font-bold">
               {pendingVerificationCount} Pending
             </span>
           </button>
@@ -208,7 +264,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             id="workflow-tab-tracking"
             onClick={() => setActiveLayer('MAINTENANCE_LAYER')}
-            className={`flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium transition-all cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-all cursor-pointer ${
               activeLayer === 'MAINTENANCE_LAYER'
                 ? 'bg-white text-emerald-700 border border-emerald-400 shadow-xs font-semibold'
                 : 'text-[#526071] hover:text-[#172033] hover:bg-white/60 border border-transparent'
@@ -216,69 +272,75 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <Wrench className="w-3.5 h-3.5 text-emerald-600" />
             <span>Problem Status Tracking</span>
-            <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-emerald-50 border border-emerald-200 text-emerald-700">
+            <span className="px-1.5 py-0.2 rounded text-[10px] font-mono bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold">
               {inProgressCount} Active
             </span>
           </button>
         </div>
 
-        {/* Dynamic Workflow Anomaly & Status Tally */}
-        <div className="flex items-center gap-2 sm:gap-3 text-xs font-mono flex-wrap">
-          <div className="flex items-center gap-1.5" title="Critical/High Severity Unresolved Problems">
+        {/* Right: Existing Counters (Values & Functionality Preserved) */}
+        <div className="flex items-center gap-1.5 sm:gap-2 text-xs font-mono flex-wrap">
+          {/* Critical / High */}
+          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-rose-50/90 border border-rose-200/90" title="Critical/High Severity Unresolved Problems">
             <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
-            <span className="text-[#526071]">Critical / High:</span>
-            <span className="text-rose-600 font-bold">{criticalHighCount}</span>
+            <span className="text-[#526071] text-[11px]">Critical / High:</span>
+            <span className="text-rose-600 font-bold text-[11px]">{criticalHighCount}</span>
           </div>
-          <span className="text-slate-300">|</span>
-          <div className="flex items-center gap-1.5" title="Medium Severity Unresolved Problems">
+          
+          {/* Medium */}
+          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-amber-50/90 border border-amber-200/90" title="Medium Severity Unresolved Problems">
             <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-            <span className="text-[#526071]">Medium:</span>
-            <span className="text-amber-600 font-bold">{mediumCount}</span>
+            <span className="text-[#526071] text-[11px]">Medium:</span>
+            <span className="text-amber-600 font-bold text-[11px]">{mediumCount}</span>
           </div>
-          <span className="text-slate-300">|</span>
+
+          {/* Pending */}
           <div 
             onClick={() => {
               setActiveLayer('MAINTENANCE_LAYER');
               setTrackingTab?.('PENDING');
             }}
-            className="flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition-opacity" 
+            className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-amber-50/70 border border-amber-200/70 cursor-pointer hover:bg-amber-100/70 transition-colors" 
             title="View problems with Pending status"
           >
-            <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-            <span className="text-[#526071]">Pending:</span>
-            <span className="text-amber-600 font-semibold">{pendingCount}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+            <span className="text-[#526071] text-[11px]">Pending:</span>
+            <span className="text-amber-700 font-semibold text-[11px]">{pendingCount}</span>
           </div>
-          <span className="text-slate-300">|</span>
+
+          {/* In Progress */}
           <div 
             onClick={() => {
               setActiveLayer('MAINTENANCE_LAYER');
               setTrackingTab?.('IN_PROGRESS');
             }}
-            className="flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition-opacity" 
+            className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-cyan-50/70 border border-cyan-200/70 cursor-pointer hover:bg-cyan-100/70 transition-colors" 
             title="View problems currently In Progress"
           >
-            <span className="w-2 h-2 rounded-full bg-cyan-500"></span>
-            <span className="text-[#526071]">In Progress:</span>
-            <span className="text-cyan-700 font-semibold">{inProgressCount}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
+            <span className="text-[#526071] text-[11px]">In Progress:</span>
+            <span className="text-cyan-700 font-semibold text-[11px]">{inProgressCount}</span>
           </div>
-          <span className="text-slate-300">|</span>
+
+          {/* Repaired / Solved */}
           <div 
             onClick={() => {
               setActiveLayer('MAINTENANCE_LAYER');
               setTrackingTab?.('SOLVED');
             }}
-            className="flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition-opacity" 
+            className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-emerald-50/70 border border-emerald-200/70 cursor-pointer hover:bg-emerald-100/70 transition-colors" 
             title="View Solved and Repaired Problems"
           >
-            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span className="text-[#526071]">Repaired / Solved:</span>
-            <span className="text-emerald-600 font-semibold">{solvedCount}</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <span className="text-[#526071] text-[11px]">Repaired / Solved:</span>
+            <span className="text-emerald-700 font-semibold text-[11px]">{solvedCount}</span>
           </div>
-          <span className="text-slate-300">|</span>
-          <div className="flex items-center gap-1.5" title="False Positives / Closed">
-            <span className="w-2 h-2 rounded-full bg-slate-400"></span>
-            <span className="text-[#526071]">False Positives:</span>
-            <span className="text-slate-600 font-semibold">{falsePositiveCount}</span>
+
+          {/* False Positives */}
+          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-slate-100/80 border border-slate-200" title="False Positives / Closed">
+            <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+            <span className="text-[#526071] text-[11px]">False Positives:</span>
+            <span className="text-slate-600 font-semibold text-[11px]">{falsePositiveCount}</span>
           </div>
         </div>
 

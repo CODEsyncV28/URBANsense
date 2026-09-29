@@ -10,12 +10,16 @@ import { LayerManagerPanel } from './components/LayerManagerPanel';
 import { UploadInterfaceModal } from './components/UploadInterfaceModal';
 import { AssignProblemModal } from './components/AssignProblemModal';
 import { SolveProblemModal } from './components/SolveProblemModal';
+import { ToastContainer } from './components/ToastContainer';
 import { 
   RoadIssue, 
   BusFleet, 
   ActiveLayer, 
   IssueType, 
-  Severity 
+  Severity,
+  AppNotification,
+  ToastAlert,
+  NotificationType
 } from './types';
 import { initialRoadIssues, initialBusFleet, generateEvidenceDataUrl } from './data/mockRoadData';
 import { AlertTriangle, Bell, CheckCircle2, Sparkles, X } from 'lucide-react';
@@ -47,7 +51,7 @@ export default function App() {
   const [isSimulateModalOpen, setIsSimulateModalOpen] = useState(false);
   const [isManualAddModalOpen, setIsManualAddModalOpen] = useState(false);
   const [problemToAssign, setProblemToAssign] = useState<RoadIssue | null>(null);
-  const [showLayerManager, setShowLayerManager] = useState(true);
+  const [showLayerManager, setShowLayerManager] = useState(false);
 
   // Fetch persisted problems from backend on initial mount
   useEffect(() => {
@@ -129,8 +133,199 @@ export default function App() {
       });
   }, []);
 
-  // Live Toast Notification
-  const [liveToast, setLiveToast] = useState<{ id: string; title: string; busId: string; severity: Severity } | null>(null);
+  // Real-Time Notification System State
+  const [notifications, setNotifications] = useState<AppNotification[]>([
+    {
+      id: 'notif-1',
+      type: 'CRITICAL',
+      title: 'Pothole detected on Station Road',
+      description: 'RV-0001 • 8cm depth • High severity',
+      problemId: 'RV-0001',
+      vehicleId: 'BUS-01',
+      timestamp: '2 min ago',
+      severity: 'HIGH',
+      isRead: false,
+      linkIssueId: 'RV-0001',
+      thumbnail: '/results/result_1789567316953_vgh5qcj.jpg',
+    },
+    {
+      id: 'notif-2',
+      type: 'MEDIUM',
+      title: 'Waterlogging detected near Civil Hospital Road',
+      description: 'RV-0002 • 15m ahead • Medium severity',
+      problemId: 'RV-0002',
+      vehicleId: 'BUS-03',
+      timestamp: '14 min ago',
+      severity: 'MEDIUM',
+      isRead: false,
+      linkIssueId: 'RV-0002',
+      thumbnail: '/results/result_1789567373106_u0r393q.jpg',
+    },
+    {
+      id: 'notif-3',
+      type: 'SYSTEM',
+      title: 'Model refreshed successfully',
+      description: 'YOLOv8 • Version 1.4 • Inference pipeline synced',
+      timestamp: '28 min ago',
+      isRead: true,
+    },
+    {
+      id: 'notif-4',
+      type: 'CRITICAL',
+      title: 'Severe Alligator Fatigue Cracking',
+      description: 'RV-0003 • Shaktinath Highway Junction • High severity',
+      problemId: 'RV-0003',
+      vehicleId: 'BUS-02',
+      timestamp: '42 min ago',
+      severity: 'HIGH',
+      isRead: true,
+      linkIssueId: 'RV-0003',
+      thumbnail: '/results/result_1789567373266_ba0c1y9.jpg',
+    },
+    {
+      id: 'notif-5',
+      type: 'SOLVED',
+      title: 'Surface Cavity Repaired',
+      description: 'RV-0005 • Work order completed by PWD Ward 4',
+      problemId: 'RV-0005',
+      timestamp: '1 hr ago',
+      severity: 'LOW',
+      isRead: true,
+      linkIssueId: 'RV-0005',
+    }
+  ]);
+
+  // Stack of active floating toast notifications (Bottom-Right)
+  const [toasts, setToasts] = useState<ToastAlert[]>([]);
+
+  // Unique detection IDs already alerted to prevent duplicate notifications
+  const alertedIssueIdsRef = useRef<Set<string>>(new Set(['RV-0002', 'RV-0003', 'RV-0005']));
+
+  const pushToast = (toast: Omit<ToastAlert, 'id'> & { id?: string }) => {
+    const toastId = toast.id || `toast-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+    const newToast: ToastAlert = {
+      ...toast,
+      id: toastId,
+      timestamp: toast.timestamp || 'Just now',
+    };
+    // Stack multiple notifications vertically (up to 4 alerts stacked cleanly)
+    setToasts((prev) => [newToast, ...prev.filter((t) => t.id !== toastId).slice(0, 3)]);
+    // Auto-dismiss after 7.5 seconds
+    setTimeout(() => {
+      setToasts((current) => current.filter((t) => t.id !== toastId));
+    }, 7500);
+  };
+
+  const dismissToast = (id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  // Central Proactive Alert Generator connected directly to AI detections
+  const triggerDetectionAlert = (issue: RoadIssue, options?: { showToast?: boolean }) => {
+    if (!issue || !issue.id) return;
+    alertedIssueIdsRef.current.add(issue.id);
+
+    // Format local time HH:mm (e.g. 17:23)
+    const now = new Date();
+    const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+    const isHighOrCritical = issue.severity === 'HIGH' || issue.priority === 'Critical';
+    const isMedium = issue.severity === 'MEDIUM' || issue.priority === 'Medium';
+    const notifType: NotificationType = isHighOrCritical ? 'CRITICAL' : isMedium ? 'MEDIUM' : 'PENDING';
+
+    const locSnippet = (issue.locationName || 'Transit Corridor').split(',')[0].trim();
+    const typeLabel = issue.type === 'pothole'
+      ? 'Pothole'
+      : issue.type === 'waterlogging'
+      ? 'Waterlogging'
+      : issue.type === 'road_damage'
+      ? 'Fatigue Cracking'
+      : issue.type === 'accident'
+      ? 'Debris & Hazard'
+      : issue.type.replace('_', ' ');
+
+    const depthInfo = issue.estimatedDimensions?.depthCm
+      ? `${issue.estimatedDimensions.depthCm}cm depth • `
+      : '';
+    const severityLabel = isHighOrCritical ? 'High severity' : isMedium ? 'Medium severity' : 'Low severity';
+
+    // 1. Automatically create / update notification (increases unread count on bell)
+    const newNotif: AppNotification = {
+      id: `notif-${issue.id}`,
+      type: notifType,
+      title: `${typeLabel} detected on ${locSnippet}...`,
+      description: `${issue.id} • ${depthInfo}${severityLabel}`,
+      problemId: issue.id,
+      vehicleId: issue.busId,
+      timestamp: timeStr,
+      severity: issue.severity,
+      thumbnail: issue.evidenceImage,
+      isRead: false,
+      linkIssueId: issue.id,
+    };
+
+    setNotifications((prev) => [
+      newNotif,
+      ...prev.filter((n) => n.id !== newNotif.id && n.problemId !== issue.id),
+    ]);
+
+    // 2. Automatically show prominent floating notification toast without user clicking anything
+    if (options?.showToast !== false) {
+      pushToast({
+        id: `toast-${issue.id}`,
+        type: notifType,
+        title: `${typeLabel} detected on ${locSnippet}...`,
+        description: `${issue.id} • ${depthInfo}${severityLabel}`,
+        problemId: issue.id,
+        vehicleId: issue.busId,
+        severity: issue.severity,
+        thumbnail: issue.evidenceImage,
+        timestamp: timeStr,
+      });
+    }
+  };
+
+  // Automatically pop proactive alert for recent detection on dashboard load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const primaryIssue = issues.find((i) => i.id === 'RV-0001') || issues[0];
+      if (primaryIssue) {
+        triggerDetectionAlert(primaryIssue, { showToast: true });
+      }
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleSelectNotification = (notif: AppNotification) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === notif.id ? { ...n, isRead: true } : n))
+    );
+    const targetId = notif.linkIssueId || notif.problemId;
+    if (targetId) {
+      const found = issues.find((i) => i.id === targetId);
+      if (found) {
+        setSelectedIssue(found);
+      }
+    }
+  };
+
+  const handleMarkAllNotificationsAsRead = () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+  };
+
+  const handleSelectToast = (toast: ToastAlert) => {
+    if (toast.problemId) {
+      const found = issues.find((i) => i.id === toast.problemId);
+      if (found) {
+        setSelectedIssue(found);
+      }
+      setNotifications((prev) =>
+        prev.map((n) => (n.problemId === toast.problemId ? { ...n, isRead: true } : n))
+      );
+    }
+    dismissToast(toast.id);
+  };
 
   // Real-time Clock (Strictly India Standard Time - Asia/Kolkata)
   const getISTTime = () => {
@@ -212,6 +407,19 @@ export default function App() {
     return () => clearInterval(interval);
   }, []);
 
+  // Continuous Autonomous Edge AI Detection Loop (Fleet Patrol)
+  useEffect(() => {
+    const autonomousScanInterval = setInterval(() => {
+      // Pick an active bus on the road
+      const activeBuses = busFleet.filter((b) => b.cameraStatus === 'ACTIVE');
+      if (activeBuses.length === 0) return;
+      const selectedBus = activeBuses[Math.floor(Math.random() * activeBuses.length)];
+      handleTriggerDetectionFromBus(selectedBus);
+    }, 28000); // Autonomous real-time edge hazard detection every 28 seconds
+
+    return () => clearInterval(autonomousScanInterval);
+  }, [busFleet]);
+
   // Handle New Ingestion from Edge AI or Bus
   const handleIngestNewIssue = (newIssue: RoadIssue) => {
     setIssues((prev) => [newIssue, ...prev]);
@@ -225,18 +433,8 @@ export default function App() {
       body: JSON.stringify(newIssue),
     }).catch((err) => console.warn('Problem persist note:', err));
 
-    // Trigger HUD Toast
-    setLiveToast({
-      id: newIssue.id,
-      title: newIssue.title,
-      busId: newIssue.busId,
-      severity: newIssue.severity,
-    });
-
-    // Auto-dismiss toast after 6s
-    setTimeout(() => {
-      setLiveToast((current) => (current?.id === newIssue.id ? null : current));
-    }, 6000);
+    // Automatically trigger proactive notification and floating toast
+    triggerDetectionAlert(newIssue, { showToast: true });
 
     // Increment detections count on the reporting bus
     setBusFleet((prev) =>
@@ -275,13 +473,10 @@ export default function App() {
 
     if (newIssues.length > 0) {
       setSelectedIssue(newIssues[0]);
-      setLiveToast({
-        id: newIssues[0].id,
-        title: generatedRouteBus
-          ? `📍 Pin Attached & Bus Route ${generatedRouteBus.routeName} Generated!`
-          : `${newIssues.length} Hazard(s) Detected from Uploaded Footage`,
-        busId: newIssues[0].busId,
-        severity: newIssues[0].severity,
+
+      // Automatically trigger notification & floating toast for each detection
+      newIssues.forEach((issue) => {
+        triggerDetectionAlert(issue, { showToast: true });
       });
 
       // Update reporting buses
@@ -299,10 +494,6 @@ export default function App() {
           return b;
         })
       );
-
-      setTimeout(() => {
-        setLiveToast(null);
-      }, 7000);
     }
   };
 
@@ -359,13 +550,14 @@ export default function App() {
           generatedBus,
           ...prev.filter((b) => b.id !== generatedBus.id),
         ]);
-        setLiveToast({
-          id: updated.id,
+        pushToast({
+          id: `toast-route-${generatedBus.id}`,
+          type: 'SYSTEM',
           title: `Bus Survey Route Deployed: ${generatedBus.routeName}`,
-          busId: generatedBus.id,
+          description: `Fleet bus ${generatedBus.id} dispatched along inspection corridor`,
+          vehicleId: generatedBus.id,
           severity: updated.severity,
         });
-        setTimeout(() => setLiveToast(null), 6000);
       }
       return true;
     } catch (e) {
@@ -645,7 +837,7 @@ export default function App() {
   // Trigger from Bus Camera HUD
   const handleTriggerDetectionFromBus = (bus: BusFleet) => {
     const timestampStr = new Date().toLocaleTimeString() + ' IST';
-    const newId = `DET-${Math.floor(8950 + Math.random() * 800)}`;
+    const newId = `RV-${Math.floor(1000 + Math.random() * 9000)}`;
     const randomTypes: IssueType[] = ['pothole', 'waterlogging', 'road_damage', 'accident'];
     const chosenType = randomTypes[Math.floor(Math.random() * randomTypes.length)];
 
@@ -707,14 +899,18 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden bg-[#F4F7FA] text-[#172033] font-sans antialiased relative">
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-smart-grid text-[#172033] font-sans antialiased relative selection:bg-cyan-500/20 selection:text-cyan-900">
       
       {/* 1. Header Bar with BEL & System Status */}
       <Header
         activeLayer={activeLayer}
         setActiveLayer={(layer) => {
           setActiveLayer(layer);
-          setShowLayerManager(true);
+          if (layer === 'AI_LAYER') {
+            setShowLayerManager(false);
+          } else {
+            setShowLayerManager(true);
+          }
         }}
         issues={issues}
         busFleet={busFleet}
@@ -728,13 +924,16 @@ export default function App() {
         currentTime={currentTime}
         trackingTab={trackingTab}
         setTrackingTab={setTrackingTab}
+        notifications={notifications}
+        onMarkAllNotificationsAsRead={handleMarkAllNotificationsAsRead}
+        onSelectNotification={handleSelectNotification}
       />
 
-      {/* Main Workspace Layout: City Map (Primary Panel) + Live Alert Panel (Side Panel) */}
+      {/* Main Workspace Layout: City Map (Primary Panel ~70%) + Live Alert Panel (Side Panel ~30%) */}
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
         
-        {/* Primary View: Full Interactive Leaflet Map */}
-        <main className="flex-1 h-full relative overflow-hidden">
+        {/* Primary View: City Map Visualization (~70%) */}
+        <main className="w-full lg:w-[70%] h-full relative overflow-hidden flex flex-col">
           <CityMap
             issues={issues}
             busFleet={busFleet}
@@ -748,24 +947,26 @@ export default function App() {
           />
         </main>
 
-        {/* Side Panel: Real-Time Live Alert Feed */}
-        <LiveAlertPanel
-          issues={issues}
-          selectedIssue={selectedIssue}
-          onSelectIssue={(issue) => setSelectedIssue(issue)}
-          onOpenEvidence={(issue) => setSelectedIssue(issue)}
-          filterType={filterType}
-          setFilterType={setFilterType}
-          filterSeverity={filterSeverity}
-          setFilterSeverity={setFilterSeverity}
-          onOpenUploadModal={() => setIsUploadModalOpen(true)}
-          onOpenSimulateModal={() => setIsSimulateModalOpen(true)}
-        />
+        {/* Side Panel: Real-Time Live Alert Feed (~30%) */}
+        <div className="w-full lg:w-[30%] h-full flex flex-col overflow-hidden border-t lg:border-t-0 lg:border-l border-[#D5DEE8]">
+          <LiveAlertPanel
+            issues={issues}
+            selectedIssue={selectedIssue}
+            onSelectIssue={(issue) => setSelectedIssue(issue)}
+            onOpenEvidence={(issue) => setSelectedIssue(issue)}
+            filterType={filterType}
+            setFilterType={setFilterType}
+            filterSeverity={filterSeverity}
+            setFilterSeverity={setFilterSeverity}
+            onOpenUploadModal={() => setIsUploadModalOpen(true)}
+            onOpenSimulateModal={() => setIsSimulateModalOpen(true)}
+          />
+        </div>
 
       </div>
 
-      {/* Bottom Linear Workflow Panel (AI Detection, Authority & Verification, Problem Status Tracking) */}
-      {showLayerManager && (
+      {/* Workflow Panel for Authority & Verification / Problem Status Tracking (AI Detection bottom section removed) */}
+      {showLayerManager && activeLayer !== 'AI_LAYER' && (
         <LayerManagerPanel
           activeLayer={activeLayer}
           issues={issues}
@@ -788,40 +989,12 @@ export default function App() {
         />
       )}
 
-      {/* Real-time Ingestion Toast Notification */}
-      {liveToast && (
-        <div 
-          onClick={() => {
-            const found = issues.find((i) => i.id === liveToast.id);
-            if (found) setSelectedIssue(found);
-            setLiveToast(null);
-          }}
-          className="fixed bottom-16 right-6 z-[2500] max-w-md p-3 rounded-lg bg-white/95 border border-cyan-500/80 shadow-[0_4px_25px_rgba(0,175,198,0.25)] text-xs font-mono flex items-center gap-3 cursor-pointer animate-bounce hover:animate-none"
-        >
-          <div className="w-3 h-3 rounded-full bg-rose-500 animate-ping shrink-0"></div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between text-[11px] text-cyan-600 font-bold mb-0.5">
-              <span>🚨 NEW DETECTION: {liveToast.id}</span>
-              <span className="text-amber-600">{liveToast.busId}</span>
-            </div>
-            <p className="text-[#172033] font-sans font-semibold text-xs truncate">
-              {liveToast.title}
-            </p>
-            <span className="text-[10px] text-cyan-600 underline">
-              Click to view camera evidence &amp; dispatch
-            </span>
-          </div>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setLiveToast(null);
-            }}
-            className="text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
-      )}
+      {/* Floating Real-Time Alert Toasts (Bottom-Right) */}
+      <ToastContainer
+        toasts={toasts}
+        onDismiss={dismissToast}
+        onSelectToast={handleSelectToast}
+      />
 
       {/* Modal 1: Issue Detail View */}
       {selectedIssue && (

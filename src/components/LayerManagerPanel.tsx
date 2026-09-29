@@ -68,24 +68,17 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
   const isAuthorityTab = activeLayer === 'AUTHORITY_LAYER' || activeLayer === 'AUTHORITY_VERIFICATION';
   const isTrackingTab = activeLayer === 'MAINTENANCE_LAYER' || activeLayer === 'ASSIGN_TRACKING';
 
+  // Do not render bottom workflow panel for AI Detection
+  if (isAiTab || (!isAuthorityTab && !isTrackingTab)) {
+    return null;
+  }
+
   return (
     <div className="bg-white/95 backdrop-blur-md border-t border-[#D5DEE8] px-4 py-3 select-none text-xs font-mono shrink-0 shadow-lg relative z-10">
       
       {/* Workflow Stage Header */}
       <div className="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-[#D5DEE8]">
         <div className="flex items-center gap-2">
-          {isAiTab && (
-            <>
-              <div className="p-1 rounded bg-cyan-50 border border-cyan-300 text-cyan-600">
-                <Cpu className="w-4 h-4" />
-              </div>
-              <div>
-                <span className="font-bold text-[#172033] uppercase tracking-wider">AI Detection Workflow</span>
-                <span className="text-[11px] text-[#526071] block">Automated YOLOv8 road defect detections &amp; sensor telemetry stream</span>
-              </div>
-            </>
-          )}
-
           {isAuthorityTab && (
             <>
               <div className="p-1 rounded bg-amber-50 border border-amber-300 text-amber-600">
@@ -182,75 +175,6 @@ export const LayerManagerPanel: React.FC<LayerManagerPanelProps> = ({
       {/* Stage-Specific Horizontal Scroller / Work Queue */}
       <div className="overflow-x-auto scrollbar-thin pb-1">
         
-        {/* STAGE 1: AI DETECTION */}
-        {isAiTab && (
-          <div className="flex items-center gap-2.5 min-w-max py-0.5">
-            {issues.map((item) => (
-              <div
-                key={item.id}
-                onClick={() => onSelectIssue(item)}
-                className="p-2.5 rounded-lg bg-white border border-[#D5DEE8] hover:border-cyan-400 transition-all cursor-pointer w-72 flex flex-col justify-between group shadow-xs"
-              >
-                <div className="flex items-center justify-between mb-1.5">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-cyan-700 font-bold">{item.id}</span>
-                    <span className="px-1.5 py-0.2 rounded text-[9px] uppercase font-mono bg-cyan-50 text-cyan-700 border border-cyan-200">
-                      {item.type.replace('_', ' ')}
-                    </span>
-                  </div>
-                  <span className="text-emerald-600 font-bold">{item.confidence}% Conf</span>
-                </div>
-
-                <div className="flex items-center gap-2 mb-2">
-                  {item.evidenceImage && (
-                    <img
-                      src={item.evidenceImage}
-                      alt={item.title}
-                      className="w-12 h-9 rounded object-cover border border-[#D5DEE8] shrink-0"
-                    />
-                  )}
-                  <div className="min-w-0 flex-1">
-                    <div className="text-[#172033] font-sans font-semibold text-[11px] truncate">
-                      {item.title}
-                    </div>
-                    <div className="text-[10px] text-[#526071] truncate">
-                      📍 {item.locationName}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between text-[10px] text-[#526071] pt-1.5 border-t border-[#D5DEE8]">
-                  <span>Bus: <strong className="text-amber-700">{item.busId}</strong></span>
-                  <div className="flex items-center gap-1">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onSelectIssue(item);
-                      }}
-                      className="px-2 py-0.5 rounded bg-cyan-50 hover:bg-cyan-100 text-cyan-700 border border-cyan-200 text-[10px] transition-colors cursor-pointer"
-                    >
-                      View Detection
-                    </button>
-                    {item.verification !== 'Verified' && item.verification !== 'VERIFIED' && onVerifyProblem && (
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onVerifyProblem(item.id);
-                        }}
-                        className="px-2 py-0.5 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-[10px] transition-colors cursor-pointer"
-                      >
-                        Verify
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
         {/* STAGE 2: AUTHORITY & VERIFICATION */}
         {isAuthorityTab && (
           <div className="flex items-center gap-2.5 min-w-max py-0.5">
